@@ -46,6 +46,8 @@ export const PLANS = [
     variant: "(Photos Only)",
     features: ["1 Event Capsule", "Up to 1500 Photos", "Annual Renewal"],
     price: "₹199/-",
+    amount: 199, // INR, used for structured data
+    period: "year",
     cta: "Choose Annual Plan →",
   },
   {
@@ -53,6 +55,8 @@ export const PLANS = [
     variant: "(Photos & Videos)",
     features: ["Photos & Videos", "Up to 1500 Photos", "Annual Renewal"],
     price: "₹399/-",
+    amount: 399, // INR, used for structured data
+    period: "year",
     cta: "Choose Annual Plan →",
   },
 ];
@@ -116,7 +120,9 @@ export const TESTIMONIALS = [
 // TODO(content): these questions come from the Figma file as-is and look
 // carried over from a balloon-decoration site. The design has no
 // answers, so each one shows a placeholder until real copy is added.
-const FAQ_PLACEHOLDER = "Answer coming soon — reach out to our team and we’ll help you right away.";
+// FAQ structured data is only emitted for answers that differ from this
+// placeholder, so search engines never see unfinished copy.
+export const FAQ_PLACEHOLDER = "Answer coming soon — reach out to our team and we’ll help you right away.";
 export const FAQS = [
   "How much does balloon decoration cost at home?",
   "Do you offer same-day and midnight balloon decoration?",
