@@ -13,6 +13,14 @@ import Occasions from "../components/landing/Occasions";
 import Testimonials from "../components/landing/Testimonials";
 import Faq from "../components/landing/Faq";
 
+// Server-side rendered on every request. The content is the same for every
+// visitor, so the response is also cached at the CDN edge for 5 minutes and
+// served stale for up to a day while it refreshes in the background.
+export async function getServerSideProps({ res }) {
+  res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=86400");
+  return { props: {} };
+}
+
 // Landing page built from the Figma design "Hora website design Ui (All)",
 // frame 10750:5359. Section order matches the design top to bottom.
 export default function Home() {
