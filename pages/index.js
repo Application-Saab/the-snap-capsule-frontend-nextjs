@@ -21,13 +21,13 @@ export async function getServerSideProps({ res }) {
   return { props: {} };
 }
 
-// Landing page built from the Figma design "Hora website design Ui (All)",
+// Landing page built from the Figma landing page design,
 // frame 10750:5359. Section order matches the design top to bottom.
 export default function Home() {
   return (
     <>
       <Head>
-        <title>Snap Capsule by HORA — One private space for every event memory</title>
+        <title>Snap Capsule — One private space for every event memory</title>
         <meta
           name="description"
           content="Create one beautiful, private event capsule where guests view and share all your celebration photos. QR code sharing, AI face recognition and albums."

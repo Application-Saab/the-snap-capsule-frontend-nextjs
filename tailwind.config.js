@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Values taken from the Figma landing page (Hora website design UI).
+        // Values taken from the Figma landing page design.
         brand: {
           DEFAULT: "#97538c", // primary buttons, links, accents
           deep: "#4a1069", // plan titles & prices

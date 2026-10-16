@@ -1,5 +1,5 @@
 // Copy and image references for the landing page, transcribed from the Figma
-// file "Hora website design Ui (All)", frame 10750:5359 (mobile, 393px).
+// landing page design, frame 10750:5359 (mobile, 393px).
 // Images live in /public/landing. Copy is kept as it appears in the design;
 // see TODO notes for spots that still need product input.
 
@@ -114,7 +114,7 @@ export const TESTIMONIALS = [
 ];
 
 // TODO(content): these questions come from the Figma file as-is and look
-// carried over from HORA's balloon-decoration site. The design has no
+// carried over from a balloon-decoration site. The design has no
 // answers, so each one shows a placeholder until real copy is added.
 const FAQ_PLACEHOLDER = "Answer coming soon — reach out to our team and we’ll help you right away.";
 export const FAQS = [
@@ -125,12 +125,11 @@ export const FAQS = [
   "Will the setup fit my room, and can I change the theme?",
   "Do you decorate venues and offices, or only homes?",
   "Is balloon decoration safe around babies and small children?",
-  "Which cities does HORA cover?",
+  "Which cities does Snap Capsule cover?",
   "How long does the setup take, and do you clean up afterward?",
 ].map((q) => ({ q, a: FAQ_PLACEHOLDER }));
 
 export const IMAGES = {
-  logo: img("logo"),
   appPhone: img("app-phone"),
   heroAvatars: img("hero-avatars"),
   qrPhoto: img("qr-share-photo"),
