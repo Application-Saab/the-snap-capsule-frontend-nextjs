@@ -1,46 +1,54 @@
-import Image from "next/image";
+import Head from "next/head";
+import Header from "../components/landing/Header";
+import Hero from "../components/landing/Hero";
+import SmartFeatures from "../components/landing/SmartFeatures";
+import ShareQr from "../components/landing/ShareQr";
+import Comparison from "../components/landing/Comparison";
+import Plans from "../components/landing/Plans";
+import GuestJoin from "../components/landing/GuestJoin";
+import TryDemo from "../components/landing/TryDemo";
+import HowItWorks from "../components/landing/HowItWorks";
+import CreateCapsuleCta from "../components/landing/CreateCapsuleCta";
+import Occasions from "../components/landing/Occasions";
+import Testimonials from "../components/landing/Testimonials";
+import Faq from "../components/landing/Faq";
 
-export async function getServerSideProps() {
-  return {
-    props: {
-      serverTime: new Date().toISOString(),
-    },
-  };
+// Server-side rendered on every request. The content is the same for every
+// visitor, so the response is also cached at the CDN edge for 5 minutes and
+// served stale for up to a day while it refreshes in the background.
+export async function getServerSideProps({ res }) {
+  res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=86400");
+  return { props: {} };
 }
 
-export default function Home({serverTime}) {
+// Landing page built from the Figma design "Hora website design Ui (All)",
+// frame 10750:5359. Section order matches the design top to bottom.
+export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            SNAP CAPSULE:
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              Share your event capsule memory here
-            </code>
-          </h1>
-        </div>
-
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-black px-5 text-background bg-black/[.06]"
-            href="https://vercel.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4 bg-black/[.06]"
-              alt="Vercel logomark"
-              width={30}
-              height={14}
-            />
-            connect with us
-          </a>
-            <p className="text-sm text-red-500">
-            Server rendered at: {serverTime}
-            </p>
-        </div>
+    <>
+      <Head>
+        <title>Snap Capsule by HORA — One private space for every event memory</title>
+        <meta
+          name="description"
+          content="Create one beautiful, private event capsule where guests view and share all your celebration photos. QR code sharing, AI face recognition and albums."
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      <Header />
+      <main className="overflow-x-hidden bg-white">
+        <Hero />
+        <SmartFeatures />
+        <ShareQr />
+        <Comparison />
+        <Plans />
+        <GuestJoin />
+        <TryDemo />
+        <HowItWorks />
+        <CreateCapsuleCta />
+        <Occasions />
+        <Testimonials />
+        <Faq />
       </main>
-    </div>
+    </>
   );
 }
