@@ -4,16 +4,16 @@ import { PrimaryButton, Section, SectionHeading } from "./shared";
 
 export default function Plans() {
   return (
-    <Section id="plans" inner="pt-[17px] md:px-6 md:pt-20">
+    <Section id="plans" inner="pt-[17px]">
       <SectionHeading title="Choose Perfect Plan For Event" />
-      <ul className="rail mt-[20px] flex gap-2 overflow-x-auto px-[9px] pb-2 md:mt-10 md:justify-center md:gap-6 md:overflow-visible">
+      <ul className="rail mt-[20px] flex gap-2 overflow-x-auto px-[9px] pb-2 sm:gap-4 [&>*:first-child]:ml-auto [&>*:last-child]:mr-auto">
         {PLANS.map((p) => (
           <li
             key={p.variant}
-            className="flex min-h-[275px] w-[250px] shrink-0 flex-col justify-center rounded-[10px] border border-brand bg-white px-[12px] py-[14px] shadow-plan md:w-[320px] md:px-8 md:py-8"
+            className="flex min-h-[275px] w-[250px] shrink-0 flex-col justify-center rounded-[10px] border border-brand bg-white px-[12px] py-[14px] shadow-plan"
           >
             <div className="font-inter font-semibold leading-[1.6] text-brand-deep">
-              <h3 className="whitespace-nowrap text-[22px] capitalize md:text-2xl">{p.name}</h3>
+              <h3 className="whitespace-nowrap text-[22px] capitalize">{p.name}</h3>
               <p className="-mt-[2px] text-[12px] uppercase">{p.variant}</p>
             </div>
             <ul className="mt-[4px] flex flex-col gap-[9px]">
@@ -30,7 +30,7 @@ export default function Plans() {
             <PrimaryButton
               href="#"
               icon={null}
-              className="mt-[15px] h-[35px] w-full rounded-[7px] text-[14px] font-bold md:h-11"
+              className="mt-[15px] h-[35px] w-full rounded-[7px] text-[14px] font-bold"
             >
               {p.cta}
             </PrimaryButton>

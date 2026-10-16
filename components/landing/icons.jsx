@@ -121,8 +121,8 @@ export function PerkIcon({ name }) {
     cursor: <path d="M3 2l9.5 4.2-4 1.3-1.4 4.2z" {...base} strokeWidth="1.3" />,
   };
   return (
-    <span className="flex h-[24px] w-[24px] shrink-0 items-center justify-center rounded-[4px] bg-brand/20 text-brand md:h-8 md:w-8">
-      <svg viewBox="0 0 16 16" className="h-[13px] w-[13px] md:h-4 md:w-4" aria-hidden>
+    <span className="flex h-[24px] w-[24px] shrink-0 items-center justify-center rounded-[4px] bg-brand/20 text-brand">
+      <svg viewBox="0 0 16 16" className="h-[13px] w-[13px]" aria-hidden>
         {paths[name]}
       </svg>
     </span>

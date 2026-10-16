@@ -7,7 +7,7 @@ function ComparisonCard({ tone, title, tagline, image, items }) {
   const old = tone === "old";
   return (
     <div
-      className={`rounded-[16px] border-2 px-[6px] py-4 md:px-6 md:py-6 ${
+      className={`rounded-[16px] border-2 px-[6px] py-4 ${
         old ? "border-[#f9bdbf] bg-[#fef4f6]" : "border-[#ded5f5] bg-[#f7f2fe]"
       }`}
     >
@@ -37,12 +37,12 @@ function ComparisonCard({ tone, title, tagline, image, items }) {
 
 export default function Comparison() {
   return (
-    <Section inner="px-[9px] pt-[14px] md:px-6 md:pt-20">
+    <Section inner="px-[9px] pt-[14px]">
       <SectionHeading
         title="Your Memories Deserve Better."
         subtitle="From scattered photos to one beautifully organized memory space."
       />
-      <div className="mt-[9px] flex flex-col gap-3 md:mt-10 md:grid md:grid-cols-2 md:gap-6">
+      <div className="mt-[9px] flex flex-col gap-3">
         <ComparisonCard
           tone="old"
           title="THE OLD WAY"
