@@ -11,7 +11,7 @@ import HowItWorks from "../components/landing/HowItWorks";
 import CreateCapsuleCta from "../components/landing/CreateCapsuleCta";
 import Occasions from "../components/landing/Occasions";
 import Testimonials from "../components/landing/Testimonials";
-import Faq from "../components/landing/Faq";
+// import Faq from "../components/landing/Faq";
 import { robotsMeta } from "../lib/site";
 import { landingPageLd } from "../lib/structuredData";
 
@@ -42,7 +42,7 @@ export default function Home({ jsonLd, robots }) {
         <CreateCapsuleCta />
         <Occasions />
         <Testimonials />
-        <Faq />
+        {/* <Faq /> */}
       </main>
     </>
   );
