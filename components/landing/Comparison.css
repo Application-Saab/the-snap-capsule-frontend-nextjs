@@ -1,0 +1,119 @@
+.comparison {
+  --cmp-danger: #e03a3e;
+  --cmp-royal: #5a3fc0;
+  max-width: 480px;
+  margin: auto;
+  box-sizing: border-box;
+  padding: 14px 9px 0;
+}
+
+.comparison *,
+.comparison *::before,
+.comparison *::after {
+  box-sizing: border-box;
+}
+
+.comparison__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 9px;
+}
+
+.comparison-card {
+  padding: 16px 6px;
+  border: 2px solid var(--cc-border);
+  border-radius: 16px;
+  background: var(--cc-bg);
+}
+
+.comparison-card--old {
+  --cc-border: #f9bdbf;
+  --cc-bg: #fef4f6;
+  --cc-head-line: #f3c9cb;
+  --cc-item-line: #f3dfe0;
+  --cc-lead: var(--cmp-danger);
+}
+
+.comparison-card--capsule {
+  --cc-border: #ded5f5;
+  --cc-bg: #f7f2fe;
+  --cc-head-line: #ddd4f3;
+  --cc-item-line: #e4dcf5;
+  --cc-lead: var(--cmp-royal);
+}
+
+.comparison-card__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--cc-head-line);
+}
+
+.comparison-card__image {
+  display: block;
+  flex-shrink: 0;
+  width: clamp(48px, 14.395vw, 56.57px);
+  height: clamp(51px, 15.273vw, 60.02px);
+}
+
+.comparison-card__heading {
+  font-family: var(--font-inter, "Inter"), sans-serif;
+  font-weight: 500;
+}
+
+.comparison-card__title {
+  margin: 0;
+  color: #000000;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: clamp(19px, 5.76vw, 22.63px);
+}
+
+.comparison-card__tagline {
+  margin: 0;
+  color: #00000085;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: clamp(12px, 3.702vw, 14.55px);
+  line-height: 100%;
+  letter-spacing: 0;
+}
+
+.comparison-card__list {
+  display: flex;
+  flex-direction: column;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.comparison-card__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+}
+
+.comparison-card__item+.comparison-card__item {
+  border-top: 1px solid var(--cc-item-line);
+}
+
+.comparison-card__text {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: clamp(13px, 3.964vw, 15.58px);
+  line-height: 1.25;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.comparison-card__lead {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: clamp(13px, 3.964vw, 15.58px);
+  line-height: 100%;
+  letter-spacing: 0;
+  color: #E84F43;
+}

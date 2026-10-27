@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "./icons";
+import "./shared.css";
 
 export function Section({ id, className = "", inner = "", children }) {
   return (
@@ -9,20 +10,26 @@ export function Section({ id, className = "", inner = "", children }) {
   );
 }
 
-export function SectionHeading({ title, subtitle, subtitleClass = "", className = "" }) {
+
+export function SectionHeading({
+  title,
+  subtitle,
+  subtitleClass = "",
+  className = "",
+}) {
   return (
-    <div className={`flex flex-col items-center text-center ${className}`}>
-      <h2 className="font-poppins text-[20px] font-bold leading-[1.2] text-brand-ink">{title}</h2>
+    <div className={`section-heading ${className}`.trim()}>
+      <h2 className="section-heading__title">{title}</h2>
       {subtitle ? (
-        <p
-          className={`mt-[6px] max-w-[300px] font-inter text-[13px] font-medium text-body ${subtitleClass}`}
-        >
+        <p className={`section-heading__subtitle ${subtitleClass}`.trim()}>
           {subtitle}
         </p>
       ) : null}
     </div>
   );
 }
+
+export default SectionHeading;
 
 export function PrimaryButton({ href = "#", children, className = "", icon = <ArrowRight /> }) {
   return (
