@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { DEMO_PERKS, IMAGES } from "./data";
-import { PerkIcon } from "./icons";
-import { PrimaryButton, ViewAllDetails } from "./shared";
+import { DEMO_PERKS, IMAGES } from "../data";
+import { PerkIcon } from "../icons";
+import { PrimaryButton, ViewAllDetails } from "../shared";
 import "./TryDemo.css";
 
 function Perk({ icon, title, text }) {

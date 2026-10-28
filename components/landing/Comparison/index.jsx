@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { CAPSULE_WAY, IMAGES, OLD_WAY } from "./data";
-import { CheckBadge, CrossBadge } from "./icons";
-import { Section, SectionHeading } from "./shared";
+import { CAPSULE_WAY, IMAGES, OLD_WAY } from "../data";
+import { CheckBadge, CrossBadge } from "../icons";
+import { Section, SectionHeading } from "../shared";
 import "./Comparison.css";
 
 function ComparisonCard({ tone, title, tagline, image, items }) {

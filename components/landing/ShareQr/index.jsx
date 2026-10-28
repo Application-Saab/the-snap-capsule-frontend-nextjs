@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { IMAGES } from "./data";
+import { IMAGES } from "../data";
 import "./shareQr.css";
 
 // Full-bleed photo on phones like the design; capped at 560px and centred

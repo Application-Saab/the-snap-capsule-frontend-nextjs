@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { HOW_IT_WORKS } from "./data";
-import { Section, ViewAllDetails } from "./shared";
+import { HOW_IT_WORKS } from "../data";
+import { Section, ViewAllDetails } from "../shared";
 import "./HowItWorks.css";
 
 export default function HowItWorks() {

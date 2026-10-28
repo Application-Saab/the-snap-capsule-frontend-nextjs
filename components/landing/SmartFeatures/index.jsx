@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { SMART_FEATURES } from "./data";
-import { Section, SectionHeading } from "./shared";
+import { SMART_FEATURES } from "../data";
+import { Section, SectionHeading } from "../shared";
 import "./SmartFeatures.css";
 
 export default function SmartFeatures() {

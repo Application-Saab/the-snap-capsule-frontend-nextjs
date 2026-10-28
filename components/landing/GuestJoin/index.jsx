@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { GUEST_STEPS } from "./data";
-import { ImagePlaceholder } from "./icons";
-import { Section, ViewAllDetails } from "./shared";
+import { GUEST_STEPS } from "../data";
+import { ImagePlaceholder } from "../icons";
+import { Section, ViewAllDetails } from "../shared";
 import "./GuestJoin.css";
 
 export default function GuestJoin() {

@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { IMAGES } from "./data";
-import { PrimaryButton, Section } from "./shared";
+import { IMAGES } from "../data";
+import { PrimaryButton, Section } from "../shared";
 import "./CreateCapsuleCta.css";
 
 export default function CreateCapsuleCta() {

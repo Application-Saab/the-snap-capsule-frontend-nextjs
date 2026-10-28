@@ -1,0 +1,84 @@
+.occasions {
+  --oc-brand: #97538c;
+
+  box-sizing: border-box;
+  padding-top: 16px; 
+}
+
+.occasions *,
+.occasions *::before,
+.occasions *::after {
+  box-sizing: border-box;
+}
+
+.occasions__head {
+  padding: 0 16px;
+  text-align: center;
+}
+
+.occasions__title {
+  margin: 0;
+  font-family: var(--font-poppins, "Poppins"), sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #000;
+}
+
+.occasions__subtitle {
+  max-width: 270px;
+  margin: 5px auto 0;
+  font-family: var(--font-inter, "Inter"), sans-serif;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #8a8a8a;
+}
+
+.occasions__rail {
+  display: flex;
+  gap: 2px;
+  margin: 7px 0 0;
+  padding: 0 7px;
+  overflow-x: auto;
+  list-style: none;
+}
+
+.occasions__rail > :first-child {
+  margin-left: auto;
+}
+
+.occasions__rail > :last-child {
+  margin-right: auto;
+}
+
+.occasions__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 9px;
+  width: 80px;
+}
+
+.occasions__image {
+  display: block;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.occasions__placeholder {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.occasions__label {
+  font-family: var(--font-poppins, "Poppins"), sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.1;
+  text-align: center;
+  color: var(--oc-brand);
+}

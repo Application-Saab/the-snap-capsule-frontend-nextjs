@@ -1,6 +1,6 @@
-import { PLANS } from "./data";
-import { CheckCircle } from "./icons";
-import { PrimaryButton, Section, SectionHeading } from "./shared";
+import { PLANS } from "../data";
+import { CheckCircle } from "../icons";
+import { PrimaryButton, Section, SectionHeading } from "../shared";
 import "./Plans.css";
 
 export default function Plans() {

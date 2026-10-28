@@ -1,4 +1,5 @@
 import Seo from "../components/Seo";
+
 import Header from "../components/landing/Header";
 import Hero from "../components/landing/Hero";
 import SmartFeatures from "../components/landing/SmartFeatures";
@@ -11,9 +12,11 @@ import HowItWorks from "../components/landing/HowItWorks";
 import CreateCapsuleCta from "../components/landing/CreateCapsuleCta";
 import Occasions from "../components/landing/Occasions";
 import Testimonials from "../components/landing/Testimonials";
+
 // import Faq from "../components/landing/Faq";
 import { robotsMeta } from "../lib/site";
 import { landingPageLd } from "../lib/structuredData";
+
 
 // Server-side rendered on every request. The content is the same for every
 // visitor, so the response is also cached at the CDN edge for 5 minutes and
@@ -32,13 +35,13 @@ export default function Home({ jsonLd, robots }) {
       <Header />
       <main className="overflow-x-hidden bg-white">
         <Hero />
-        <SmartFeatures />
+        <SmartFeatures/>
         <ShareQr />
         <Comparison />
         <Plans />
         <GuestJoin />
         <TryDemo />
-        <HowItWorks />
+        <HowItWorks/>
         <CreateCapsuleCta />
         <Occasions />
         <Testimonials />
