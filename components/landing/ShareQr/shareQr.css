@@ -1,59 +1,76 @@
+
+/* =========================================
+   SHARE QR — RESPONSIVE 320px TO 480px
+   Reference screen: 393px
+   No media queries
+========================================= */
+
 .share-qr {
-    --sq-ink: #1a1a1a;
-    --sq-body: #4b4b4b;
-    margin: auto;
-    max-width: 480px;
-    box-sizing: border-box;
-    margin-top: 13px;
-    background: linear-gradient(to bottom, #fff, #fcf4ef);
+  --sq-ink: #1a1a1a;
+  --sq-body: #4b4b4b;
+
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  margin-top: clamp(10.59px, 3.308vw, 13px);
+  box-sizing: border-box;
+  background: linear-gradient(to bottom, #fff, #fcf4ef);
 }
 
 .share-qr *,
 .share-qr *::before,
 .share-qr *::after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .share-qr__container {
-    width: 100%;
-    max-width: 780px;
-    margin: 0 auto;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 .share-qr__head {
-    padding: 25px 12px 0;
+  padding:
+    clamp(20.36px, 6.361vw, 25px)
+    clamp(9.77px, 3.053vw, 12px)
+    0;
 }
 
 .share-qr__title {
-    margin: 0;
-    color: #1E0756;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    font-size: clamp(17px, 5.09vw, 20px);
-    vertical-align: bottom;
+  margin: 0;
+  color: #1e0756;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: clamp(16.28px, 5.089vw, 20px);
+  line-height: 1.2;
+  letter-spacing: 0;
+  vertical-align: bottom;
 }
 
 .share-qr__text {
-    margin: 2px 0 0;
-    color: #494949;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    font-size: clamp(11px, 3.308vw, 13px);
+  margin: clamp(1.63px, 0.509vw, 2px) 0 0;
+  color: #494949;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: clamp(8.96px, 3.308vw, 13px);
+  line-height: 1.35;
 }
 
 .share-qr__photo {
-    max-width: 560px;
-    margin: 0 auto;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 .share-qr__steps {
-    width: 100%;
-    max-width: 560px;
-    margin: 0 auto;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 .share-qr__image {
-    display: block;
-    width: 100%;
-    height: auto;
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }

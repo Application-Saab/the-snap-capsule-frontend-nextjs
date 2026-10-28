@@ -1,10 +1,13 @@
 .comparison {
   --cmp-danger: #e03a3e;
   --cmp-royal: #5a3fc0;
+
+  width: 100%;
   max-width: 480px;
-  margin: auto;
+  margin: 0 auto;
   box-sizing: border-box;
-  padding: 14px 9px 0;
+  padding: clamp(11.4px, 3.562vw, 14px)
+           clamp(7.33px, 2.29vw, 9px) 0;
 }
 
 .comparison *,
@@ -16,14 +19,15 @@
 .comparison__cards {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 9px;
+  gap: clamp(9.77px, 3.053vw, 12px);
+  margin-top: clamp(7.33px, 2.29vw, 9px);
 }
 
 .comparison-card {
-  padding: 16px 6px;
+  padding: clamp(13px, 4.071vw, 16px)
+           clamp(4.89px, 1.527vw, 6px);
   border: 2px solid var(--cc-border);
-  border-radius: 16px;
+  border-radius: clamp(13px, 4.071vw, 16px);
   background: var(--cc-bg);
 }
 
@@ -46,16 +50,16 @@
 .comparison-card__head {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding-bottom: 6px;
+  gap: clamp(6.5px, 2.036vw, 8px);
+  padding-bottom: clamp(4.89px, 1.527vw, 6px);
   border-bottom: 1px solid var(--cc-head-line);
 }
 
 .comparison-card__image {
   display: block;
   flex-shrink: 0;
-  width: clamp(48px, 14.395vw, 56.57px);
-  height: clamp(51px, 15.273vw, 60.02px);
+  width: clamp(39px, 14.395vw, 56.57px);
+  height: clamp(41.4px, 15.273vw, 60.02px);
 }
 
 .comparison-card__heading {
@@ -65,18 +69,18 @@
 
 .comparison-card__title {
   margin: 0;
-  color: #000000;
-  font-family: 'Inter', sans-serif;
+  color: #000;
+  font-family: "Inter", sans-serif;
   font-weight: 500;
-  font-size: clamp(19px, 5.76vw, 22.63px);
+  font-size: clamp(15.5px, 5.76vw, 22.63px);
 }
 
 .comparison-card__tagline {
   margin: 0;
   color: #00000085;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 500;
-  font-size: clamp(12px, 3.702vw, 14.55px);
+  font-size: clamp(9.77px, 3.702vw, 14.55px);
   line-height: 100%;
   letter-spacing: 0;
 }
@@ -84,7 +88,7 @@
 .comparison-card__list {
   display: flex;
   flex-direction: column;
-  margin: 18px 0 0;
+  margin: clamp(14.66px, 4.58vw, 18px) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -92,27 +96,27 @@
 .comparison-card__item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 5px 0;
+  gap: clamp(8px, 2.545vw, 10px);
+  padding: clamp(4px, 1.272vw, 5px) 0;
 }
 
-.comparison-card__item+.comparison-card__item {
+.comparison-card__item + .comparison-card__item {
   border-top: 1px solid var(--cc-item-line);
 }
 
 .comparison-card__text {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 600;
-  font-size: clamp(13px, 3.964vw, 15.58px);
+  font-size: clamp(10.5px, 3.964vw, 15.58px);
   line-height: 1.25;
   color: rgba(0, 0, 0, 0.7);
 }
 
 .comparison-card__lead {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 600;
-  font-size: clamp(13px, 3.964vw, 15.58px);
+  font-size: clamp(10.5px, 3.964vw, 15.58px);
   line-height: 100%;
   letter-spacing: 0;
   color: #E84F43;

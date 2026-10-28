@@ -8,8 +8,7 @@ export default function Testimonials() {
   return (
     <Section>
       <div className="testimonials">
-        <h2 className="testimonials__title">What Our Customers Say</h2>
-        {/* "rail" purani global class hai (scrollbar wagairah), isliye rakhi hai */}
+        <h2 className="testimonials__title">Loved By thousands of happy customers</h2>
         <ul className="rail testimonials__rail">
           {TESTIMONIALS.map((t, i) => (
             <li key={i} className="testimonials__card">

@@ -3,7 +3,7 @@
 // Images live in /public/landing. Copy is kept as it appears in the design;
 // see TODO notes for spots that still need product input.
 
-const img = (name) => `/landing/${name}.png`;
+const img = (name, ext = "png") => `/landing/${name}.${ext}`;
 
 export const NAV_LINKS = [
   { label: "Features", href: "#features" },
@@ -14,12 +14,12 @@ export const NAV_LINKS = [
 ];
 
 export const SMART_FEATURES = [
-  { title: "Private Host Locker", text: "Secure & private memory locker.", image: img("feature-private-locker") },
-  { title: "Create Galleries", text: "Keep memories safe & organized.", image: img("feature-galleries") },
-  { title: "Like, Share", text: "Enjoy, share & save memories.", image: img("feature-like-share") },
-  { title: "Face Recognition", text: "Faces tagged automatically.", image: img("feature-face-recognition") },
-  { title: "Album Creation", text: "Auto-sorted into My Photos.", image: img("feature-albums") },
-  { title: "Add New Photos", text: "Upload photos & videos.", image: img("feature-add-photos") },
+  { title: "Private Host Locker", text: "Secure & private memory locker.", image: img("feature-private-locker", "webp") },
+  { title: "Create Galleries", text: "Keep memories safe & organized.", image: img("feature-galleries", "webp") },
+  { title: "Like, Share", text: "Enjoy, share & save memories.", image: img("feature-like-share", "webp") },
+  { title: "Face Recognition", text: "Faces tagged automatically.", image: img("feature-face-recognition", "webp") },
+  { title: "Album Creation", text: "Auto-sorted into My Photos.", image: img("feature-albums", "webp") },
+  { title: "Add New Photos", text: "Upload photos & videos.", image: img("feature-add-photos", "webp") },
 ];
 
 export const OLD_WAY = [
@@ -65,27 +65,27 @@ export const PLANS = [
 // area and could not be exported. Drop the files into /public/landing with
 // these names and set `image` to show them.
 export const GUEST_STEPS = [
-  { title: "Get The Invite", text: "Your host will share a link via WhatsApp, SMS, or social media.", image: img("guest-invite") },
-  { title: "Create Your Profile", text: "Click the link and quickly log in to get started.", image: img("guest-profile") },
-  { title: "Share Your Moments", text: "Upload photos, videos, or messages to the event gallery.", image: null },
-  { title: "Like & Comment", text: "React to guests’ posts and be part of the celebration.", image: null },
-  { title: "Relive the Memories", text: "Enjoy all the shared moments in one place, forever!", image: null },
+  { title: "Get The Invite", text: "Your host will share a link via WhatsApp, SMS, or social media.", image: img("guest-invite","webp") },
+  { title: "Create Your Profile", text: "Click the link and quickly log in to get started.", image: img("guest-profile","webp") },
+  { title: "Share Your Moments", text: "Upload photos, videos, or messages to the event gallery.", image:img("guest-moment","webp") },
+  { title: "Like & Comment", text: "React to guests’ posts and be part of the celebration.", image: img("guest-like-comment","webp") },
+  { title: "Relive the Memories", text: "Enjoy all the shared moments in one place, forever!", image: img("guest-memories","webp")},
 ];
 
 export const DEMO_PERKS = [
-  { icon: "bolt", title: "Full Access", text: "Get complete access to all features and tools - no limits.", side: "right", top: 128 },
-  { icon: "shield", title: "No Credit Card Required", text: "Just sign up and start exploring for free.", side: "left", top: 186 },
-  { icon: "clock", title: "Quick & Easy", text: "It only takes a minute to get started.", side: "right", top: 238 },
-  { icon: "cursor", title: "Hands-on Experience", text: "Try it out yourself and see how it fits your needs.", side: "left", top: 270 },
+  { icon: "bolt", title: "Full Access", text: "Get complete access to all features and tools - no limits.", side: "right", top: 120 },
+  { icon: "shield", title: "No Credit Card Required", text: "Just sign up and start exploring for free.", side: "left", top: 155 },
+  { icon: "clock", title: "Quick & Easy", text: "It only takes a minute to get started.", side: "right", top: 210 },
+  { icon: "cursor", title: "Hands-on Experience", text: "Try it out yourself and see how it fits your needs.", side: "left", top: 240 },
 ];
 
 export const HOW_IT_WORKS = [
-  { title: "Create Capsule", text: "Create your unique Event Capsule in seconds.", image: img("how-create"), bg: "#f6f2fe" },
-  { title: "Add Photos", text: "You & your guests upload photos from the event.", image: img("how-add-photos"), bg: "#fdf8f3" },
-  { title: "Share Link", text: "Share the link with your guests instantly.", image: img("how-share-link"), bg: "#f5f3fe" },
-  { title: "AI Magic", text: "Our AI detects faces and organizes everything.", image: img("how-ai"), bg: "#f1f5fe" },
-  { title: "Enjoy Memories", text: "Like, share, download and relive memories.", image: img("how-enjoy"), bg: "#fdf2fa" },
-  { title: "Scan QR Code", text: "Share the QR code with your guests to view images.", image: img("how-scan-qr"), bg: "#fff7ec" },
+  { title: "Create Capsule", text: "Create your unique Event Capsule in seconds.", image: img("how-create","webp"), bg: "#f6f2fe" },
+  { title: "Add Photos", text: "You & your guests upload photos from the event.", image: img("how-add-photos","webp"), bg: "#fdf8f3" },
+  { title: "Share Link", text: "Share the link with your guests instantly.", image: img("how-share-link","webp"), bg: "#f5f3fe" },
+  { title: "AI Magic", text: "Our AI detects faces and organizes everything.", image: img("how-ai","webp"), bg: "#f1f5fe" },
+  { title: "Enjoy Memories", text: "Like, share, download and relive memories.", image: img("how-enjoy","webp"), bg: "#fdf2fa" },
+  { title: "Scan QR Code", text: "Share the QR code with your guests to view images.", image: img("how-scan-qr","webp"), bg: "#fff7ec" },
 ];
 
 // "Baby Shower" has no image yet (cut off at the edge of the Figma frame).
@@ -136,11 +136,18 @@ export const FAQS = [
 ].map((q) => ({ q, a: FAQ_PLACEHOLDER }));
 
 export const IMAGES = {
-  appPhone: img("app-phone"),
+  appPhone: img("app-phone","webp"),
   heroAvatars: img("hero-avatars"),
-  qrPhoto: img("qr-share-photo"),
+  qrPhoto: img("qr-share-photo","webp"),
   qrSteps: img("qr-share-steps"),
   oldWayFolder: img("old-way-folder"),
   capsuleFolder: img("capsule-folder"),
-  createCapsuleBox: img("create-capsule-box"),
+  createCapsuleBox: img("create-capsule-box","webp"),
 };
+
+export const AVATARS = [
+  { initials: "A", color: "#F4A261" },
+  { initials: "R", color: "#2A9D8F" },
+  { initials: "S", color: "#E76F51" },
+  { initials: "M", color: "#8E7DBE" },
+];

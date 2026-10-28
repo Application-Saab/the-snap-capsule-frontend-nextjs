@@ -19,8 +19,8 @@
 .create-capsule__image {
   display: block;
   flex-shrink: 0;
-  width: 116px;
-  height: 146px;
+width: clamp(94.63px, 29.517vw, 116px);
+height: clamp(114.12px, 35.623vw, 140px);
 }
 
 .create-capsule__body {
