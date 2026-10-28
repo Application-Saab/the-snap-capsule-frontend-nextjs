@@ -33,7 +33,7 @@ export default function Home({ jsonLd, robots }) {
     <>
       <Seo path="/" robots={robots} jsonLd={jsonLd} imageAlt="Snap Capsule app showing a shared family event gallery" />
       <Header />
-      <main className="overflow-x-hidden bg-white">
+      <main className="overflow-x-hidden bg-white mb-10">
         <Hero />
         <SmartFeatures/>
         <ShareQr />
