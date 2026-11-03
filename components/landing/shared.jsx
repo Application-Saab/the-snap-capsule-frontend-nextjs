@@ -31,14 +31,35 @@ export function SectionHeading({
 
 export default SectionHeading;
 
-export function PrimaryButton({ href = "#", children, className = "", icon = <ArrowRight /> }) {
-  return (
-    <Link
-      href={href}
-      className={`inline-flex items-center justify-center gap-2 rounded-[6px] bg-brand font-inter font-semibold text-white transition hover:bg-[#82467a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${className}`}
-    >
+export function PrimaryButton({
+  href,
+  onClick,
+  children,
+  className = "",
+  icon = <ArrowRight />,
+}) {
+  const classes = `inline-flex items-center justify-center gap-2 rounded-[6px] bg-brand font-inter font-semibold text-white transition hover:bg-[#82467a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${className}`;
+
+  const content = (
+    <>
       <span>{children}</span>
       {icon}
+    </>
+  );
+
+  // onClick hai aur href nahi -> button (modal kholne ke liye)
+  if (onClick && !href) {
+    return (
+      <button type="button" onClick={onClick} className={classes}>
+        {content}
+      </button>
+    );
+  }
+
+  // warna pehle jaisa Link
+  return (
+    <Link href={href || "#"} className={classes}>
+      {content}
     </Link>
   );
 }

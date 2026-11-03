@@ -7,7 +7,7 @@ import "./Hero.css";
 
 
 
-export default function Hero() {
+export default function Hero({ onCreate }) {
   return (
     <Section>
       <div className="hero">
@@ -42,7 +42,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <PrimaryButton href="#plans" icon={<ChevronRight />} className="hero__cta">
+          <PrimaryButton onClick={onCreate} icon={<ChevronRight />} className="hero__cta">
             Create Capsule
           </PrimaryButton>
         </div>

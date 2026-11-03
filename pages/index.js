@@ -1,3 +1,4 @@
+import { useCallback, useState } from "react";
 import Seo from "../components/Seo";
 
 import Header from "../components/landing/Header";
@@ -12,41 +13,52 @@ import HowItWorks from "../components/landing/HowItWorks";
 import CreateCapsuleCta from "../components/landing/CreateCapsuleCta";
 import Occasions from "../components/landing/Occasions";
 import Testimonials from "../components/landing/Testimonials";
-
+import capsulecreate from "../assets/capsulecreate.webp"
 // import Faq from "../components/landing/Faq";
 import { robotsMeta } from "../lib/site";
 import { landingPageLd } from "../lib/structuredData";
+import CreateCapsuleModal from "../components/Createcapsulemodal";
 
-
-// Server-side rendered on every request. The content is the same for every
-// visitor, so the response is also cached at the CDN edge for 5 minutes and
-// served stale for up to a day while it refreshes in the background.
 export async function getServerSideProps({ res }) {
   res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=86400");
   return { props: { jsonLd: landingPageLd(), robots: robotsMeta() } };
 }
 
-// Landing page built from the Figma landing page design,
-// frame 10750:5359. Section order matches the design top to bottom.
 export default function Home({ jsonLd, robots }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = useCallback(() => setIsModalOpen(true), []);
+  const closeModal = useCallback(() => setIsModalOpen(false), []);
+
+  const handleCreateCapsule = ({ eventName, eventDate }) => {
+    console.log({ eventName, eventDate }); // yahan API call ya router.push() karo
+    closeModal();
+  };
+
   return (
     <>
       <Seo path="/" robots={robots} jsonLd={jsonLd} imageAlt="Snap Capsule app showing a shared family event gallery" />
       <Header />
       <main className="overflow-x-hidden bg-white mb-10">
-        <Hero />
-        <SmartFeatures/>
+        <Hero  onCreate={openModal}/>
+        <SmartFeatures />
         <ShareQr />
         <Comparison />
         <Plans />
         <GuestJoin />
         <TryDemo />
-        <HowItWorks/>
+        <HowItWorks />
         <CreateCapsuleCta />
         <Occasions />
         <Testimonials />
-        {/* <Faq /> */}
       </main>
+      
+      <CreateCapsuleModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onSubmit={handleCreateCapsule}
+        illustrationSrc={capsulecreate}
+      />
     </>
   );
 }
