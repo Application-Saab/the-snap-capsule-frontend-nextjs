@@ -1,4 +1,7 @@
+import { useRouter } from "next/router";
+import { useCallback, useState } from "react";
 import Seo from "../components/Seo";
+import LoginModal from "../components/auth/LoginModal";
 import Header from "../components/landing/Header";
 import Hero from "../components/landing/Hero";
 import SmartFeatures from "../components/landing/SmartFeatures";
@@ -23,15 +26,43 @@ export async function getServerSideProps({ res }) {
   return { props: { jsonLd: landingPageLd(), robots: robotsMeta() } };
 }
 
+// Where "Create Capsule" leads once the user is signed in.
+// TODO: point this at the create-capsule page when it exists.
+const CREATE_CAPSULE_PATH = "/account";
+
 // Landing page built from the Figma landing page design,
 // frame 10750:5359. Section order matches the design top to bottom.
 export default function Home({ jsonLd, robots }) {
+  const router = useRouter();
+  const [loginOpen, setLoginOpen] = useState(false);
+  const closeLogin = useCallback(() => setLoginOpen(false), []);
+
+  // Signed in → go straight on. Otherwise show the login popup.
+  // (The page itself is cached for everyone, so the session is checked here
+  // in the browser rather than on the server.)
+  const openCreateCapsule = useCallback(
+    async (event) => {
+      event.preventDefault();
+      try {
+        const res = await fetch("/api/auth/me");
+        if (res.ok) {
+          router.push(CREATE_CAPSULE_PATH);
+          return;
+        }
+      } catch {
+        // Network problem: fall through and show the login popup.
+      }
+      setLoginOpen(true);
+    },
+    [router]
+  );
+
   return (
     <>
       <Seo path="/" robots={robots} jsonLd={jsonLd} imageAlt="Snap Capsule app showing a shared family event gallery" />
       <Header />
       <main className="overflow-x-hidden bg-white">
-        <Hero />
+        <Hero onCreateCapsule={openCreateCapsule} />
         <SmartFeatures />
         <ShareQr />
         <Comparison />
@@ -44,6 +75,7 @@ export default function Home({ jsonLd, robots }) {
         <Testimonials />
         {/* <Faq /> */}
       </main>
+      <LoginModal open={loginOpen} onClose={closeLogin} next={CREATE_CAPSULE_PATH} />
     </>
   );
 }

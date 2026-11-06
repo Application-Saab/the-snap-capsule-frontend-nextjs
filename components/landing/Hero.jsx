@@ -3,7 +3,8 @@ import { IMAGES } from "./data";
 import { ChevronRight, Stars } from "./icons";
 import { PrimaryButton, Section } from "./shared";
 
-export default function Hero() {
+// onCreateCapsule opens the login popup; the href is the no-JavaScript fallback.
+export default function Hero({ onCreateCapsule }) {
   return (
     <Section inner="flex items-center justify-between gap-2 px-3 pt-[14px] sm:justify-center sm:gap-16 sm:pt-8">
       <div className="flex w-[208px] shrink-0 flex-col gap-[7px] sm:w-auto sm:max-w-[380px] sm:flex-1">
@@ -34,7 +35,8 @@ export default function Hero() {
         </div>
 
         <PrimaryButton
-          href="#plans"
+          href="/login?next=%2Faccount"
+          onClick={onCreateCapsule}
           icon={<ChevronRight />}
           className="mt-[5px] h-[35px] w-[186px] gap-3 rounded-[7px] font-poppins text-[13.6px]"
         >
