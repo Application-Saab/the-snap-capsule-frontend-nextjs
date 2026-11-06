@@ -24,10 +24,11 @@ export function SectionHeading({ title, subtitle, subtitleClass = "", className 
   );
 }
 
-export function PrimaryButton({ href = "#", children, className = "", icon = <ArrowRight /> }) {
+export function PrimaryButton({ href = "#", children, className = "", icon = <ArrowRight />, onClick }) {
   return (
     <Link
       href={href}
+      onClick={onClick}
       className={`inline-flex items-center justify-center gap-2 rounded-[6px] bg-brand font-inter font-semibold text-white transition hover:bg-[#82467a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${className}`}
     >
       <span>{children}</span>
