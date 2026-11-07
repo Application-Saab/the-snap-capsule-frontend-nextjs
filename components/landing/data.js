@@ -90,30 +90,29 @@ export const HOW_IT_WORKS = [
 
 // "Baby Shower" has no image yet (cut off at the edge of the Figma frame).
 export const OCCASIONS = [
-  { label: "Birthday Party", image: img("occ-birthday") },
-  { label: "Weddings & Engagements", image: img("occ-wedding") },
-  { label: "Corporate Event", image: img("occ-corporate") },
-  { label: "Trip & Vacations", image: img("occ-trip") },
-  { label: "Baby Shower", image: null },
+  { label: "Birthday Party", image: img("occ-birthday","webp") },
+  { label: "Weddings & Engagements", image: img("occ-wedding","webp") },
+  { label: "Corporate Event", image: img("occ-corporate","webp") },
+  { label: "Trip & Vacations", image: img("occ-trip","webp") },
+  { label: "Baby Shower", image:  img("occ-babyshower","webp") },
 ];
 
 // TODO(content): the design repeats one placeholder review for every card.
-// Replace with real customer quotes and names before launch.
 export const TESTIMONIALS = [
-  {
-    name: "Mohit Sharma",
-    quote: "You guys did a very great job in preparing everything so quick and making my event happen! Will book next time too.",
-    image: img("testimonial-1"),
+ {
+    name: "Neha Gupta",
+    quote: "All our guests uploaded their photos in one place. Every moment of my sister's wedding is now safe in one capsule!",
+    image: img("testimonial-1", "webp"),
   },
   {
-    name: "Mohit Sharma",
-    quote: "You guys did a very great job in preparing everything so quick and making my event happen! Will book next time too.",
-    image: img("testimonial-2"),
+    name: "Rajesh Kumar",
+    quote: "The face recognition is amazing. I found every photo of my family from the event within a few seconds.",
+    image: img("testimonial-2", "webp"),
   },
   {
-    name: "Mohit Sharma",
-    quote: "You guys did a very great job in preparing everything so quick and making my event happen! Will book next time too.",
-    image: null,
+    name: "Amit Verma",
+    quote: "Very easy to set up and share. The QR code worked perfectly and everyone loved reliving the party together.",
+    image: img("testimonial-3", "webp"),
   },
 ];
 
@@ -140,8 +139,8 @@ export const IMAGES = {
   heroAvatars: img("hero-avatars"),
   qrPhoto: img("qr-share-photo","webp"),
   qrSteps: img("qr-share-steps"),
-  oldWayFolder: img("old-way-folder"),
-  capsuleFolder: img("capsule-folder"),
+  oldWayFolder: img("old-way-folder","webp"),
+  capsuleFolder: img("capsule-folder","webp"),
   createCapsuleBox: img("create-capsule-box","webp"),
 };
 

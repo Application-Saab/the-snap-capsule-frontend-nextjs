@@ -6,7 +6,7 @@ import "./shareQr.css";
 // inside the 780px page container on wider screens.
 export default function ShareQr() {
   return (
-    <section className="share-qr">
+
       <div className="share-qr__container">
         <div className="share-qr__head">
           <h2 className="share-qr__title">Share QR Code or Link</h2>
@@ -26,16 +26,6 @@ export default function ShareQr() {
           />
         </div>
       </div>
-      <div className="share-qr__steps">
-        <Image
-          src={IMAGES.qrSteps}
-          alt="1. View photos from the photographer by scanning the QR code. 2. Upload your own photos to help create everyone's memories."
-          width={393}
-          height={217}
-          sizes="(min-width: 560px) 560px, 100vw"
-          className="share-qr__image"
-        />
-      </div>
-    </section>
+    
   );
 }
