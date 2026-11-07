@@ -1,0 +1,89 @@
+.occasions {
+  --oc-brand: #97538c;
+
+  box-sizing: border-box;
+  padding-top: 16px; 
+}
+
+.occasions *,
+.occasions *::before,
+.occasions *::after {
+  box-sizing: border-box;
+}
+
+.occasions__head {
+  padding: 0 16px;
+  text-align: center;
+}
+
+.occasions__title {
+  margin: 0;
+ font-family: 'Poppins', sans-serif;
+font-weight: 700;
+font-size: clamp(14.96px, 4.674vw, 22.44px);
+text-align: center;
+vertical-align: middle;
+color: #1E0756;
+}
+
+.occasions__subtitle {
+  max-width: 250px;
+  margin: 5px auto 0;
+color: #6B6478;
+font-family: 'Inter', sans-serif;
+font-weight: 300;
+line-height: 100%;
+font-size: clamp(8.15px, 2.545vw, 12.21px);
+text-align: center;
+}
+
+.occasions__rail {
+  display: flex;
+  gap: 2px;
+  height: 105px;
+  margin: 11px 0 0;
+  padding: 0 7px;
+  overflow-x: auto;
+  list-style: none;
+}
+
+.occasions__rail > :first-child {
+  margin-left: auto;
+}
+
+.occasions__rail > :last-child {
+  margin-right: auto;
+}
+
+.occasions__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 9px;
+  width: 80px;
+}
+
+.occasions__image {
+  display: block;
+  width: clamp(54.2px, 16.933vw, 66.55px);
+  height: clamp(54.2px, 16.933vw, 66.55px);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.occasions__placeholder {
+  width: clamp(54.2px, 16.933vw, 66.55px);
+  height: clamp(54.2px, 16.933vw, 66.55px);
+  border-radius: 50%;
+}
+
+.occasions__label {
+ color: #97538C;
+font-family: 'Inter', sans-serif;
+font-weight: 600;
+font-size: clamp(9.49px, 2.964vw, 11.65px);
+line-height: 100%;
+letter-spacing: 0;
+text-align: center;
+}

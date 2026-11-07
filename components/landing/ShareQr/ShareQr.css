@@ -1,0 +1,76 @@
+
+/* =========================================
+   SHARE QR — RESPONSIVE 320px TO 480px
+   Reference screen: 393px
+   No media queries
+========================================= */
+
+.share-qr {
+  --sq-ink: #1a1a1a;
+  --sq-body: #4b4b4b;
+
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  margin-top: clamp(10.59px, 3.308vw, 13px);
+  box-sizing: border-box;
+  background: linear-gradient(to bottom, #fff, #fcf4ef);
+}
+
+.share-qr *,
+.share-qr *::before,
+.share-qr *::after {
+  box-sizing: border-box;
+}
+
+.share-qr__container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.share-qr__head {
+  padding:
+    clamp(20.36px, 6.361vw, 25px)
+    clamp(9.77px, 3.053vw, 12px)
+    0;
+}
+
+.share-qr__title {
+  margin: 0;
+  color: #1e0756;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: clamp(16.28px, 5.089vw, 20px);
+  line-height: 1.2;
+  letter-spacing: 0;
+  vertical-align: bottom;
+}
+
+.share-qr__text {
+  margin: clamp(1.63px, 0.509vw, 2px) 0 0;
+  color: #494949;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: clamp(8.96px, 3.308vw, 13px);
+  line-height: 1.35;
+}
+
+.share-qr__photo {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.share-qr__steps {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.share-qr__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
