@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import Seo from "../components/Seo";
-import CreateCapsuleModal from "../components/capsule/CreateCapsuleModal";
 import Header from "../components/landing/Header";
 import Hero from "../components/landing/Hero";
 import SmartFeatures from "../components/landing/SmartFeatures";
@@ -80,12 +79,6 @@ export default function Home({ jsonLd, robots }) {
         <Testimonials />
         {/* <Faq /> */}
       </main>
-      <CreateCapsuleModal
-        open={capsuleModal.open}
-        startStep={capsuleModal.startStep}
-        onClose={closeCapsuleModal}
-        onCreated={handleCapsuleCreated}
-      />
     </>
   );
 }
