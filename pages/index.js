@@ -47,7 +47,7 @@ export default function Home({ jsonLd, robots }) {
     setCapsuleModal({ open: true, startStep: signedIn ? "details" : "login" });
   }, []);
 
-  // /?create=1 (e.g. "+ Create capsule" on the account page) opens it.
+  // /?create=1 (e.g. "+ Create capsule" on the capsules page) opens it.
   useEffect(() => {
     if (!router.isReady || router.query.create !== "1") return;
     router.replace("/", undefined, { shallow: true, scroll: false });
@@ -57,7 +57,7 @@ export default function Home({ jsonLd, robots }) {
   const handleCapsuleCreated = useCallback(
     (capsule) => {
       setCapsuleModal((m) => ({ ...m, open: false }));
-      router.push(`/account?created=${encodeURIComponent(capsule.id)}`);
+      router.push(`/capsules/${encodeURIComponent(capsule.id)}`);
     },
     [router]
   );

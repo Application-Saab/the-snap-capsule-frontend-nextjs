@@ -14,7 +14,7 @@ const RESEND_FALLBACK_SECONDS = 60;
  * @param onSignedIn     if given, called after sign-in instead of navigating
  *                       (the Create Capsule popup moves on to its next step)
  */
-export default function LoginCard({ next = "/account", headingId = "login-heading", replaceHistory = true, onSignedIn }) {
+export default function LoginCard({ next = "/capsules", headingId = "login-heading", replaceHistory = true, onSignedIn }) {
   const router = useRouter();
   const finish = () => {
     if (onSignedIn) {

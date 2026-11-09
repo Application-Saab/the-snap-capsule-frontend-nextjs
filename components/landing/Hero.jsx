@@ -35,7 +35,7 @@ export default function Hero({ onCreateCapsule }) {
         </div>
 
         <PrimaryButton
-          href="/login?next=%2Faccount"
+          href="/login?next=%2Fcapsules"
           onClick={onCreateCapsule}
           icon={<ChevronRight />}
           className="mt-[5px] h-[35px] w-[186px] gap-3 rounded-[7px] font-poppins text-[13.6px]"
