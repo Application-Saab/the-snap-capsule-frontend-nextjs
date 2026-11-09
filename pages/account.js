@@ -28,7 +28,7 @@ export default function AccountPage({ user }) {
     if (typeof window !== "undefined" && window.google && window.google.accounts) {
       window.google.accounts.id.disableAutoSelect();
     }
-    router.replace("/login");
+    router.replace("/");
   }
 
   const initial = (user.name || user.email || "?").trim().charAt(0).toUpperCase();

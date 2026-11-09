@@ -15,7 +15,7 @@ export default function AppHeader() {
     if (typeof window !== "undefined" && window.google && window.google.accounts) {
       window.google.accounts.id.disableAutoSelect();
     }
-    router.replace("/login");
+    router.replace("/");
   }
 
   const linkClass = "block px-4 py-2.5 font-inter text-sm font-medium text-brand-ink hover:bg-brand/5";
