@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import Seo from "../components/Seo";
-import CreateCapsuleModal from "../components/capsule/CreateCapsuleModal";
+import LoginModal from "../components/auth/LoginModal";
 import Header from "../components/landing/Header";
 import Hero from "../components/landing/Hero";
 import SmartFeatures from "../components/landing/SmartFeatures";
@@ -26,38 +26,33 @@ export async function getServerSideProps({ res }) {
   return { props: { jsonLd: landingPageLd(), robots: robotsMeta() } };
 }
 
+// Where "Create Capsule" leads once the user is signed in.
+// TODO: point this at the create-capsule page when it exists.
+const CREATE_CAPSULE_PATH = "/account";
+
 // Landing page built from the Figma landing page design,
 // frame 10750:5359. Section order matches the design top to bottom.
 export default function Home({ jsonLd, robots }) {
   const router = useRouter();
-  const [capsuleModal, setCapsuleModal] = useState({ open: false, startStep: "login" });
-  const closeCapsuleModal = useCallback(() => setCapsuleModal((m) => ({ ...m, open: false })), []);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const closeLogin = useCallback(() => setLoginOpen(false), []);
 
-  // "Create Capsule": signed-in users go straight to the event details step,
-  // everyone else signs in first. (The page is cached for everyone, so the
-  // session is checked here in the browser rather than on the server.)
-  const openCreateCapsule = useCallback(async (event) => {
-    if (event) event.preventDefault();
-    let signedIn = false;
-    try {
-      signedIn = (await fetch("/api/auth/me")).ok;
-    } catch {
-      // Network problem: start with sign-in.
-    }
-    setCapsuleModal({ open: true, startStep: signedIn ? "details" : "login" });
-  }, []);
-
-  // /?create=1 (e.g. "+ Create capsule" on the account page) opens it.
-  useEffect(() => {
-    if (!router.isReady || router.query.create !== "1") return;
-    router.replace("/", undefined, { shallow: true, scroll: false });
-    openCreateCapsule();
-  }, [router, openCreateCapsule]);
-
-  const handleCapsuleCreated = useCallback(
-    (capsule) => {
-      setCapsuleModal((m) => ({ ...m, open: false }));
-      router.push(`/account?created=${encodeURIComponent(capsule.id)}`);
+  // Signed in → go straight on. Otherwise show the login popup.
+  // (The page itself is cached for everyone, so the session is checked here
+  // in the browser rather than on the server.)
+  const openCreateCapsule = useCallback(
+    async (event) => {
+      event.preventDefault();
+      try {
+        const res = await fetch("/api/auth/me");
+        if (res.ok) {
+          router.push(CREATE_CAPSULE_PATH);
+          return;
+        }
+      } catch {
+        // Network problem: fall through and show the login popup.
+      }
+      setLoginOpen(true);
     },
     [router]
   );
@@ -80,12 +75,7 @@ export default function Home({ jsonLd, robots }) {
         <Testimonials />
         {/* <Faq /> */}
       </main>
-      <CreateCapsuleModal
-        open={capsuleModal.open}
-        startStep={capsuleModal.startStep}
-        onClose={closeCapsuleModal}
-        onCreated={handleCapsuleCreated}
-      />
+      <LoginModal open={loginOpen} onClose={closeLogin} next={CREATE_CAPSULE_PATH} />
     </>
   );
 }
