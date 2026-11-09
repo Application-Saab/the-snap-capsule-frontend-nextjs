@@ -11,10 +11,19 @@ const RESEND_FALLBACK_SECONDS = 60;
  * @param next           where to go after signing in
  * @param headingId      id for the heading (the popup uses it as its label)
  * @param replaceHistory true on /login so Back doesn't return to the form
+ * @param onSignedIn     if given, called after sign-in instead of navigating
+ *                       (the Create Capsule popup moves on to its next step)
  */
-export default function LoginCard({ next = "/account", headingId = "login-heading", replaceHistory = true }) {
+export default function LoginCard({ next = "/account", headingId = "login-heading", replaceHistory = true, onSignedIn }) {
   const router = useRouter();
-  const finish = () => (replaceHistory ? router.replace(next) : router.push(next));
+  const finish = () => {
+    if (onSignedIn) {
+      onSignedIn();
+      return;
+    }
+    if (replaceHistory) router.replace(next);
+    else router.push(next);
+  };
   const [step, setStep] = useState("email"); // email | code
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");

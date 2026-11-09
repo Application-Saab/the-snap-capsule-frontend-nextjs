@@ -1,34 +1,32 @@
 import { useEffect, useRef } from "react";
-import LoginCard from "./LoginCard";
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 /**
- * The login screen as a popup over the current page.
- * Closes with the × button, the Escape key, or a click outside the card.
+ * Popup shell: dark overlay, × button, closes with Escape or a click
+ * outside, keeps keyboard focus inside, and stops the page scrolling behind.
+ *
+ * @param labelledBy id of the heading inside that names the popup
+ * @param focusKey   change it (e.g. when the step changes) to move focus to
+ *                   the first input again
  */
-export default function LoginModal({ open, onClose, next = "/account" }) {
+export default function Modal({ open, onClose, labelledBy, focusKey, children }) {
   const dialogRef = useRef(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     if (!open) return undefined;
 
     const previouslyFocused = document.activeElement;
     const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden"; // stop the page scrolling behind the popup
-
-    // Start keyboard focus on the email field.
-    const focusTimer = setTimeout(() => {
-      const first = dialogRef.current && dialogRef.current.querySelector("input:not([disabled])");
-      if (first) first.focus();
-    }, 0);
+    document.body.style.overflow = "hidden";
 
     function onKeyDown(event) {
       if (event.key === "Escape") {
-        onClose();
+        onCloseRef.current();
         return;
       }
-      // Keep Tab inside the popup.
       if (event.key === "Tab" && dialogRef.current) {
         const items = [...dialogRef.current.querySelectorAll(FOCUSABLE)];
         if (!items.length) return;
@@ -46,12 +44,21 @@ export default function LoginModal({ open, onClose, next = "/account" }) {
     document.addEventListener("keydown", onKeyDown);
 
     return () => {
-      clearTimeout(focusTimer);
       document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = previousOverflow;
       if (previouslyFocused && previouslyFocused.focus) previouslyFocused.focus();
     };
-  }, [open, onClose]);
+  }, [open]);
+
+  // Focus the first text field on open and whenever the content changes step.
+  useEffect(() => {
+    if (!open) return undefined;
+    const timer = setTimeout(() => {
+      const first = dialogRef.current && dialogRef.current.querySelector('input[type="email"], input[type="text"]');
+      if (first && !first.disabled) first.focus();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [open, focusKey]);
 
   if (!open) return null;
 
@@ -66,7 +73,7 @@ export default function LoginModal({ open, onClose, next = "/account" }) {
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="login-modal-heading"
+        aria-labelledby={labelledBy}
         className="relative w-full max-w-[420px]"
       >
         <button
@@ -79,7 +86,7 @@ export default function LoginModal({ open, onClose, next = "/account" }) {
             <path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
           </svg>
         </button>
-        <LoginCard next={next} headingId="login-modal-heading" replaceHistory={false} />
+        {children}
       </div>
     </div>
   );
