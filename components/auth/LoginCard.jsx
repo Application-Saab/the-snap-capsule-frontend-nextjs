@@ -1,10 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import GoogleSignInButton from "./GoogleSignInButton";
+import OtpInput from "./OtpInput";
 
 const RESEND_FALLBACK_SECONDS = 60;
+// The backend says how long its codes are (codeLength); 4 until it does.
+const DEFAULT_CODE_LENGTH = 4;
 
 /**
- * The Snap Capsule login card: email + 6-digit code, or Google.
+ * The Snap Capsule login card, two screens from the design:
+ *   "Get Started"  – email → Get OTP, or Google
+ *   "Verification" – one box per digit of the emailed code → Continue
  * Shown inside the login popup (there is no separate /login page).
  *
  * @param headingId  id for the heading (the popup uses it as its label)
@@ -17,6 +22,7 @@ export default function LoginCard({ headingId = "login-heading", onSignedIn }) {
   const [step, setStep] = useState("email"); // email | code
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
+  const [codeLength, setCodeLength] = useState(DEFAULT_CODE_LENGTH);
   const [busy, setBusy] = useState(null); // null | "send" | "verify" | "google"
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
@@ -51,6 +57,7 @@ export default function LoginCard({ headingId = "login-heading", onSignedIn }) {
       setError("Please enter a valid email address.");
       return;
     }
+    const isResend = step === "code";
     setBusy("send");
     setError("");
     setInfo("");
@@ -64,9 +71,13 @@ export default function LoginCard({ headingId = "login-heading", onSignedIn }) {
       }
       setEmail(data.email || trimmed);
       setCode("");
+      setCodeLength(Number(data.codeLength) || DEFAULT_CODE_LENGTH);
       setStep("code");
       setResendIn(Number(data.resendAfterSeconds) || RESEND_FALLBACK_SECONDS);
-      setInfo(data.message || `We've sent a 6-digit code to ${trimmed}.`);
+      if (isResend) {
+        setInfo("We've sent a new code.");
+        if (codeInput.current) codeInput.current.focus();
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -76,25 +87,26 @@ export default function LoginCard({ headingId = "login-heading", onSignedIn }) {
 
   async function verifyCode(event) {
     event.preventDefault();
-    if (!/^\d{6}$/.test(code)) {
-      setError("Enter the 6-digit code from the email.");
+    if (code.length !== codeLength) {
+      setError(`Enter the ${codeLength}-digit code from the email.`);
       return;
     }
     setBusy("verify");
     setError("");
+    setInfo("");
     try {
       const { ok, data } = await post("/api/auth/email/verify-otp", { email, code });
       if (!ok) {
-        if (data.code === "OTP_EXPIRED" || data.code === "OTP_TOO_MANY_ATTEMPTS") {
-          setCode("");
-          setResendIn(0);
-        }
+        if (data.code === "OTP_EXPIRED" || data.code === "OTP_TOO_MANY_ATTEMPTS") setResendIn(0);
         throw new Error(data.message || "That code didn't work. Please try again.");
       }
       finish(data.user);
     } catch (err) {
+      // Clear the boxes so the next try starts from the first one.
+      setCode("");
       setError(err.message);
       setBusy(null);
+      setTimeout(() => codeInput.current && codeInput.current.focus(), 0);
     }
   }
 
@@ -111,17 +123,18 @@ export default function LoginCard({ headingId = "login-heading", onSignedIn }) {
     }
   }
 
-  function changeEmail() {
-    setStep("email");
-    setCode("");
-    setError("");
-    setInfo("");
-  }
-
   const resendLabel =
     resendIn > 0
-      ? `Resend code in ${Math.floor(resendIn / 60)}:${String(resendIn % 60).padStart(2, "0")}`
-      : "Resend code";
+      ? `Resend Code in ${Math.floor(resendIn / 60)}:${String(resendIn % 60).padStart(2, "0")}`
+      : "Resend Code";
+
+  const status = (
+    <div className="relative mt-3 min-h-[20px] text-center font-inter text-[13px]" role="status" aria-live="polite">
+      {error ? <span className="text-danger">{error}</span> : null}
+      {!error && info ? <span className="text-black/60">{info}</span> : null}
+      {!error && busy === "google" ? <span className="text-brand">Signing you in…</span> : null}
+    </div>
+  );
 
   return (
     <section className="relative overflow-hidden rounded-[28px] bg-gradient-to-b from-[#f4ecf6] via-[#faf6fb] to-white px-6 pb-6 pt-8 shadow-[0_10px_30px_rgba(151,83,140,0.10)]">
@@ -131,98 +144,47 @@ export default function LoginCard({ headingId = "login-heading", onSignedIn }) {
       <Sparkle className="right-6 top-[150px] h-4 w-4 text-[#f0a8c8]" />
       <Sparkle className="bottom-4 left-5 h-5 w-5 text-brand/30" />
 
-      <div className="relative text-center">
-        <p className="font-inter text-[16px] font-medium text-[#6d6a9c]">Welcome to Snap Capsule</p>
-        <h1 id={headingId} className="mt-1 font-poppins text-[34px] font-bold leading-tight text-brand-ink">
-          Get{" "}
-          <span className="relative inline-block text-brand">
-            Started
-            <Underline />
-          </span>
-        </h1>
-        <p className="mt-3 font-inter text-[16px] text-[#6d6a9c]">
-          {step === "email" ? "Login with your email address" : "Enter the code we emailed you"}
-        </p>
-      </div>
-
-      {step === "email" ? (
-        <form className="relative mt-6" onSubmit={sendCode} noValidate>
-          <label htmlFor="login-email" className="sr-only">
-            Email address
-          </label>
-          <input
-            id="login-email"
-            type="email"
-            inputMode="email"
-            placeholder="Enter Your Email"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            disabled={busy !== null}
-            className="h-[52px] w-full rounded-[12px] border border-black/10 bg-white px-4 font-inter text-[16px] text-black shadow-[0_2px_8px_rgba(0,0,0,0.06)] outline-none placeholder:text-black/40 focus:border-brand focus:ring-2 focus:ring-brand/20"
-          />
-          <button
-            type="submit"
-            disabled={busy !== null}
-            className="mt-5 flex h-[50px] w-full items-center justify-center gap-2 rounded-[10px] bg-brand font-inter text-[18px] font-bold text-white shadow-[0_4px_10px_rgba(151,83,140,0.25)] transition hover:bg-[#82467a] disabled:opacity-60"
-          >
-            {busy === "send" ? "Sending code…" : <>Get OTP <span aria-hidden>→</span></>}
-          </button>
-        </form>
-      ) : (
-        <form className="relative mt-6" onSubmit={verifyCode} noValidate>
-          <p className="text-center font-inter text-[14px] text-black/70">
-            Code sent to <strong className="font-semibold text-black">{email}</strong>{" "}
-            <button type="button" onClick={changeEmail} className="font-medium text-brand underline-offset-2 hover:underline">
-              Change
-            </button>
-          </p>
-          <label htmlFor="login-code" className="sr-only">
-            6-digit code
-          </label>
-          <input
-            id="login-code"
-            ref={codeInput}
-            type="text"
-            inputMode="numeric"
-            autoComplete="one-time-code"
-            pattern="[0-9]*"
-            maxLength={6}
-            placeholder="••••••"
-            value={code}
-            onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-            disabled={busy !== null}
-            className="mt-3 h-[56px] w-full rounded-[12px] border border-black/10 bg-white px-4 text-center font-inter text-[26px] font-semibold tracking-[0.5em] text-brand-ink shadow-[0_2px_8px_rgba(0,0,0,0.06)] outline-none placeholder:text-black/25 focus:border-brand focus:ring-2 focus:ring-brand/20"
-          />
-          <button
-            type="submit"
-            disabled={busy !== null || code.length !== 6}
-            className="mt-5 flex h-[50px] w-full items-center justify-center gap-2 rounded-[10px] bg-brand font-inter text-[18px] font-bold text-white shadow-[0_4px_10px_rgba(151,83,140,0.25)] transition hover:bg-[#82467a] disabled:opacity-60"
-          >
-            {busy === "verify" ? "Verifying…" : <>Verify &amp; Continue <span aria-hidden>→</span></>}
-          </button>
-          <div className="mt-3 text-center">
-            <button
-              type="button"
-              onClick={() => sendCode()}
-              disabled={resendIn > 0 || busy !== null}
-              className="font-inter text-[13px] font-medium text-brand disabled:text-black/40"
-            >
-              {busy === "send" ? "Sending…" : resendLabel}
-            </button>
-          </div>
-        </form>
-      )}
-
-      <div className="relative mt-4 min-h-[20px] text-center font-inter text-[13px]" role="status" aria-live="polite">
-        {error ? <span className="text-danger">{error}</span> : null}
-        {!error && info && step === "code" ? <span className="text-black/60">{info} It&apos;s valid for 10 minutes.</span> : null}
-        {!error && busy === "google" ? <span className="text-brand">Signing you in…</span> : null}
-      </div>
-
       {step === "email" ? (
         <>
-          <div className="relative mt-2 flex items-center gap-3 font-inter text-[13px] text-black/40" aria-hidden>
+          <div className="relative text-center">
+            <p className="font-inter text-[16px] font-medium text-[#6d6a9c]">Welcome to Snap Capsule</p>
+            <h1 id={headingId} className="mt-1 font-poppins text-[34px] font-bold leading-tight text-brand-ink">
+              Get{" "}
+              <span className="relative inline-block text-brand">
+                Started
+                <Underline />
+              </span>
+            </h1>
+            <p className="mt-3 font-inter text-[16px] text-[#6d6a9c]">Login with your email address</p>
+          </div>
+
+          <form className="relative mt-6" onSubmit={sendCode} noValidate>
+            <label htmlFor="login-email" className="sr-only">
+              Email address
+            </label>
+            <input
+              id="login-email"
+              type="email"
+              inputMode="email"
+              placeholder="Enter Your Email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={busy !== null}
+              className="h-[52px] w-full rounded-[12px] border border-black/10 bg-white px-4 font-inter text-[16px] text-black shadow-[0_2px_8px_rgba(0,0,0,0.06)] outline-none placeholder:text-black/40 focus:border-brand focus:ring-2 focus:ring-brand/20"
+            />
+            <button
+              type="submit"
+              disabled={busy !== null}
+              className="mt-5 flex h-[50px] w-full items-center justify-center gap-2 rounded-[10px] bg-brand font-inter text-[18px] font-bold text-white shadow-[0_4px_10px_rgba(151,83,140,0.25)] transition hover:bg-[#82467a] disabled:opacity-60"
+            >
+              {busy === "send" ? "Sending code…" : <>Get OTP <span aria-hidden>→</span></>}
+            </button>
+          </form>
+
+          {status}
+
+          <div className="relative mt-1 flex items-center gap-3 font-inter text-[13px] text-black/40" aria-hidden>
             <span className="h-px flex-1 bg-black/10" />
             OR
             <span className="h-px flex-1 bg-black/10" />
@@ -247,7 +209,58 @@ export default function LoginCard({ headingId = "login-heading", onSignedIn }) {
             </ComingSoonCircle>
           </div>
         </>
-      ) : null}
+      ) : (
+        <>
+          <div className="relative text-center">
+            <p className="font-inter text-[16px] font-medium text-[#6d6a9c]">Welcome to Snap Capsule</p>
+            <h1 id={headingId} className="mt-1 font-poppins text-[32px] font-bold leading-tight text-brand-ink">
+              <span className="relative inline-block">
+                Verification
+                <Underline />
+              </span>
+            </h1>
+            <p className="mt-4 font-inter text-[15px] leading-[21px] text-[#6d6a9c]">
+              Check your email, we have sent you
+              <br />
+              an OTP to <strong className="break-all font-semibold text-brand">{email}</strong>
+            </p>
+          </div>
+
+          <form className="relative mt-6" onSubmit={verifyCode} noValidate>
+            <OtpInput
+              ref={codeInput}
+              length={codeLength}
+              value={code}
+              onChange={(next) => {
+                setCode(next);
+                if (error) setError("");
+              }}
+              disabled={busy === "verify"}
+              invalid={Boolean(error)}
+            />
+            <div className="mt-3 text-center">
+              <button
+                type="button"
+                onClick={() => sendCode()}
+                disabled={resendIn > 0 || busy !== null}
+                className="font-inter text-[12px] font-medium text-black underline underline-offset-2 disabled:text-black/40 disabled:no-underline"
+              >
+                {busy === "send" ? "Sending…" : resendLabel}
+              </button>
+            </div>
+
+            {status}
+
+            <button
+              type="submit"
+              disabled={busy !== null || code.length !== codeLength}
+              className="mt-2 flex h-[50px] w-full items-center justify-center gap-2 rounded-[10px] bg-brand font-inter text-[18px] font-bold uppercase text-white shadow-[0_4px_10px_rgba(151,83,140,0.25)] transition hover:bg-[#82467a] disabled:opacity-60"
+            >
+              {busy === "verify" ? "Verifying…" : <>Continue <span aria-hidden>→</span></>}
+            </button>
+          </form>
+        </>
+      )}
 
       <ul className="relative mt-6 flex items-center justify-center gap-3 font-inter text-[11px] text-brand">
         <TrustItem icon="shield">Secure Login</TrustItem>
