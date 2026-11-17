@@ -1,4 +1,6 @@
+import { useCallback, useEffect, useState } from "react";
 import Seo from "../components/Seo";
+import LoginModal from "../components/auth/LoginModal";
 
 import Header from "../components/landing/Header";
 import Hero from "../components/landing/Hero";
@@ -29,12 +31,42 @@ export async function getServerSideProps({ res }) {
 // Landing page built from the Figma landing page design,
 // frame 10750:5359. Section order matches the design top to bottom.
 export default function Home({ jsonLd, robots }) {
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [notice, setNotice] = useState("");
+
+  // "Create Capsule" / "Create Now": sign in first. The page is cached for
+  // everyone, so the session is checked here in the browser, not on the server.
+  const openCreateCapsule = useCallback(async (event) => {
+    if (event) event.preventDefault();
+    let user = null;
+    try {
+      const res = await fetch("/api/auth/me");
+      if (res.ok) user = (await res.json()).user;
+    } catch {
+      // Network problem: show the login popup.
+    }
+    if (user) setNotice(signedInText(user));
+    else setLoginOpen(true);
+  }, []);
+
+  const closeLogin = useCallback(() => setLoginOpen(false), []);
+  const handleSignedIn = useCallback((user) => {
+    setLoginOpen(false);
+    setNotice(signedInText(user));
+  }, []);
+
+  useEffect(() => {
+    if (!notice) return undefined;
+    const timer = setTimeout(() => setNotice(""), 4000);
+    return () => clearTimeout(timer);
+  }, [notice]);
+
   return (
     <>
       <Seo path="/" robots={robots} jsonLd={jsonLd} imageAlt="Snap Capsule app showing a shared family event gallery" />
       <Header />
       <main className="overflow-x-hidden bg-white mb-10">
-        <Hero />
+        <Hero onCreateCapsule={openCreateCapsule} />
         <SmartFeatures/>
         <ShareQr />
         <Comparison />
@@ -42,11 +74,26 @@ export default function Home({ jsonLd, robots }) {
         <GuestJoin />
         <TryDemo />
         <HowItWorks/>
-        <CreateCapsuleCta />
+        <CreateCapsuleCta onCreateCapsule={openCreateCapsule} />
         <Occasions />
         <Testimonials />
         {/* <Faq /> */}
       </main>
+      <LoginModal open={loginOpen} onClose={closeLogin} onSignedIn={handleSignedIn} />
+      <p
+        role="status"
+        aria-live="polite"
+        className={`fixed inset-x-0 bottom-6 z-40 mx-auto w-fit max-w-[90%] rounded-full bg-brand-ink px-5 py-2.5 text-center font-inter text-[14px] font-medium text-white shadow-lg transition-opacity ${
+          notice ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      >
+        {notice}
+      </p>
     </>
   );
+}
+
+function signedInText(user) {
+  const who = (user && (user.name || user.email)) || "";
+  return who ? `You're signed in as ${who}` : "You're signed in";
 }
