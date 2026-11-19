@@ -20,6 +20,21 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Login (email code + Google)
+
+"Create Capsule" and "Create Now" open a login popup (there is no `/login` page). Users sign in with a 6-digit code sent to their email, or with Google. The popup talks to this app's `/api/auth/*` routes, which forward to the Express backend and keep the session in an httpOnly `sc_session` cookie (browser JavaScript never sees the token).
+
+Create `.env.local` with:
+
+```
+# Google OAuth Web client ID (public)
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=238383179178-dn4hei0qsd1t5ge037bghbispjr0gsoj.apps.googleusercontent.com
+# Where the Express backend runs (server-only)
+BACKEND_URL=http://localhost:5000
+```
+
+Restart `npm run dev` after changing it. The backend (`the-snap-capsule-backend-nodejs-expressjs`) must be running; locally it prints the email code in its terminal when SMTP isn't set up. For Google, the site's address (e.g. `http://localhost:3000`) must be in the OAuth client's Authorised JavaScript origins.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

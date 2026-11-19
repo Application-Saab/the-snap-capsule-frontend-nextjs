@@ -3,7 +3,8 @@ import { IMAGES } from "../data";
 import { PrimaryButton, Section } from "../shared";
 import "./CreateCapsuleCta.css";
 
-export default function CreateCapsuleCta() {
+// onCreateCapsule opens the login popup; the href is the no-JavaScript fallback.
+export default function CreateCapsuleCta({ onCreateCapsule }) {
   return (
     <Section>
       <div className="create-capsule">
@@ -19,7 +20,7 @@ export default function CreateCapsuleCta() {
           <p className="create-capsule__text">
             Build your Event Capsule from the ground up. Add details, photos, settings and make it truly yours.
           </p>
-          <PrimaryButton href="#plans" className="create-capsule__cta">
+          <PrimaryButton href="#plans" onClick={onCreateCapsule} className="create-capsule__cta">
             Create Now
           </PrimaryButton>
         </div>

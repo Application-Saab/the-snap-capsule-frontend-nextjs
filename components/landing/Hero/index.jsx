@@ -5,7 +5,8 @@ import { PrimaryButton, Section } from "../shared";
 import { AVATARS } from "../data";
 import "./Hero.css";
 
-export default function Hero() {
+// onCreateCapsule opens the login popup; the href is the no-JavaScript fallback.
+export default function Hero({ onCreateCapsule }) {
   return (
     <Section>
       <div className="hero">
@@ -40,7 +41,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <PrimaryButton href="#plans" icon={<ChevronRight />} className="hero__cta">
+          <PrimaryButton href="#plans" onClick={onCreateCapsule} icon={<ChevronRight />} className="hero__cta">
             Create Capsule
           </PrimaryButton>
         </div>
