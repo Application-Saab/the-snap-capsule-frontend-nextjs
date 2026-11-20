@@ -34,7 +34,8 @@ export async function getServerSideProps({ res }) {
 export default function Home({ jsonLd, robots }) {
   // Create Capsule popup: { open, step: "login" | "details" }
   const router = useRouter();
-  const [capsuleModal, setCapsuleModal] = useState({ open: false, step: "login" });
+  // Create Capsule popup: { open, step: "login" | "details", customerId }
+  const [capsuleModal, setCapsuleModal] = useState({ open: false, step: "login", customerId: null });
   const [notice, setNotice] = useState("");
 
   // "Create Capsule" / "Create Now": sign in first, then the event details.
@@ -42,21 +43,29 @@ export default function Home({ jsonLd, robots }) {
   // browser, not on the server.
   const openCreateCapsule = useCallback(async (event) => {
     if (event) event.preventDefault();
-    let signedIn = false;
+    let user = null;
     try {
-      signedIn = (await fetch("/api/auth/me")).ok;
+      const res = await fetch("/api/auth/me");
+      if (res.ok) user = (await res.json()).user || null;
     } catch {
       // Network problem: start with the login step.
     }
-    setCapsuleModal({ open: true, step: signedIn ? "details" : "login" });
+    setCapsuleModal(
+      user ? { open: true, step: "details", customerId: user.id } : { open: true, step: "login", customerId: null },
+    );
   }, []);
 
   const closeCapsuleModal = useCallback(() => setCapsuleModal((m) => ({ ...m, open: false })), []);
-  const changeCapsuleStep = useCallback((step) => setCapsuleModal({ open: true, step }), []);
+  const changeCapsuleStep = useCallback((step) => setCapsuleModal((m) => ({ ...m, open: true, step })), []);
+  // Logged in inside the popup: remember who, then show the event details.
+  const handleSignedIn = useCallback(
+    (user) => setCapsuleModal({ open: true, step: "details", customerId: user ? user.id : null }),
+    [],
+  );
   // After creating, open the capsule's weblink gallery page on this site.
   const handleCapsuleCreated = useCallback(
     (capsule) => {
-      setCapsuleModal({ open: false, step: "details" });
+      setCapsuleModal((m) => ({ ...m, open: false }));
       router.push(galleryPath(capsule.id));
     },
     [router],
@@ -89,6 +98,8 @@ export default function Home({ jsonLd, robots }) {
       <CreateCapsuleModal
         open={capsuleModal.open}
         step={capsuleModal.step}
+        customerId={capsuleModal.customerId}
+        onSignedIn={handleSignedIn}
         onClose={closeCapsuleModal}
         onStepChange={changeCapsuleStep}
         onCreated={handleCapsuleCreated}

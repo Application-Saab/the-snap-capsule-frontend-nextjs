@@ -10,11 +10,12 @@ const MAX_YEARS_AHEAD = 5;
  * creates the capsule (POST /api/capsules). Shown in the popup right after
  * sign-in, or straight away if the user is already signed in.
  *
+ * @param customerId       the signed-in user's id, sent as customerId
  * @param onCreated        (capsule) => void, called after the capsule is saved
  * @param onSessionExpired () => void, called if the user is no longer signed in
  * @param headingId        id for the heading (the popup uses it as its label)
  */
-export default function CreateCapsuleCard({ onCreated, onSessionExpired, headingId = "create-capsule-heading" }) {
+export default function CreateCapsuleCard({ customerId, onCreated, onSessionExpired, headingId = "create-capsule-heading" }) {
   const [name, setName] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [dateFocused, setDateFocused] = useState(false);
@@ -43,7 +44,7 @@ export default function CreateCapsuleCard({ onCreated, onSessionExpired, heading
       const res = await fetch("/api/capsules", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: trimmed, eventDate }),
+        body: JSON.stringify({ name: trimmed, eventDate, customerId }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.status === 401 && onSessionExpired) {

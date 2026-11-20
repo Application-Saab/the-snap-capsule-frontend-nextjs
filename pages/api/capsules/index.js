@@ -4,12 +4,13 @@ import { backendUrl, clearedSessionCookie, fetchCurrentUser, getSessionToken, is
 const CREATE_PATH = "/api/internal/create-event-capsule";
 
 /**
- * POST /api/capsules { name, eventDate: "YYYY-MM-DD" }
+ * POST /api/capsules { name, eventDate: "YYYY-MM-DD", customerId }
  *
  * Creates the Event Capsule for the signed-in user:
  *   POST {BACKEND_URL}/api/internal/create-event-capsule
- *   { eventName: name, eventDate, customerId: <signed-in user's id> }
- * The customerId always comes from the session cookie, never from the browser.
+ *   { eventName: name, eventDate, customerId }
+ * customerId must be the signed-in user's id (checked against the session
+ * cookie; 403 otherwise). If it's missing, the session user's id is used.
  *
  * Replies 201 { capsule: { id, name, eventDate, shortCode, webLink } } or { message, field? }.
  */
@@ -36,13 +37,18 @@ export default async function handler(req, res) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(eventDate)) {
     return res.status(400).json({ message: "Please choose a valid event date.", field: "eventDate" });
   }
+  const bodyCustomerId = req.body?.customerId;
+  if (bodyCustomerId !== undefined && bodyCustomerId !== null && String(bodyCustomerId) !== String(user.id)) {
+    return res.status(403).json({ message: "You can only create capsules for your own account." });
+  }
+  const customerId = String(user.id);
 
   let backendRes;
   try {
     backendRes = await fetch(backendUrl(CREATE_PATH), {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ eventName: name, eventDate, customerId: user.id }),
+      body: JSON.stringify({ eventName: name, eventDate, customerId }),
       signal: AbortSignal.timeout(20000),
     });
   } catch {
@@ -72,5 +78,11 @@ export default async function handler(req, res) {
     return res.status(400).json({ message: data.message || "Please check the details.", field });
   }
   console.error(`[create-capsule] backend ${backendRes.status}: ${data.message || "no message"}`);
+  if (backendRes.status === 404 && process.env.NODE_ENV !== "production") {
+    // Local setup problem: the backend running here has no create API.
+    return res.status(502).json({
+      message: `The backend at ${backendUrl("")} has no ${CREATE_PATH} (404). Run the backend's snapcapsule-flow branch.`,
+    });
+  }
   return res.status(502).json({ message: "Couldn't create your capsule. Please try again." });
 }

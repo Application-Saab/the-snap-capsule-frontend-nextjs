@@ -10,16 +10,19 @@ const DETAILS_HEADING = "create-capsule-details-heading";
  *   step "login"   – Get Started / Verification (skipped if already signed in)
  *   step "details" – Let's Create Your Capsule (event name + date)
  *
+ * @param customerId   the signed-in user's id (sent with the create request)
+ * @param onSignedIn   (user) => void, called after login; moves on to "details"
  * @param onStepChange (step) => void, e.g. back to "login" if the session ended
  * @param onCreated    (capsule) => void, called after the capsule is saved
  */
-export default function CreateCapsuleModal({ open, step, onClose, onStepChange, onCreated }) {
+export default function CreateCapsuleModal({ open, step, customerId, onClose, onSignedIn, onStepChange, onCreated }) {
   return (
     <Modal open={open} onClose={onClose} labelledBy={step === "login" ? LOGIN_HEADING : DETAILS_HEADING}>
       {step === "login" ? (
-        <LoginCard headingId={LOGIN_HEADING} onSignedIn={() => onStepChange("details")} />
+        <LoginCard headingId={LOGIN_HEADING} onSignedIn={onSignedIn} />
       ) : (
         <CreateCapsuleCard
+          customerId={customerId}
           headingId={DETAILS_HEADING}
           onCreated={onCreated}
           onSessionExpired={() => onStepChange("login")}
