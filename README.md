@@ -37,19 +37,21 @@ Restart `npm run dev` after changing it. The backend (`the-snap-capsule-backend-
 
 ## Create Event Capsule
 
-After signing in, the same popup shows **"Let's Create Your Capsule"** with two fields: **Event Name** (2–80 characters) and **Event Date** (`YYYY-MM-DD`, from 1900 up to 5 years ahead). Users who are already signed in go straight to this step.
-
-The form posts to this app's `POST /api/capsules`. That route reads the signed-in user from the session cookie and calls the backend's create-event API (same as Hora):
+1. The user clicks **Create Capsule** (or **Create Now**) and signs in in the popup, if they aren't already.
+2. The popup shows **"Let's Create Your Capsule"**: **Event Name** (2–80 characters) and **Event Date** (`YYYY-MM-DD`).
+3. **Create Event Capsule** posts to this app's `POST /api/capsules`. That route adds the signed-in user's id and calls the backend:
 
 ```
-POST {BACKEND_URL}/api/customer/event/create-event-invite
+POST {BACKEND_URL}/api/internal/create-event-capsule
 Authorization: Bearer <session token>
-{ "userId": "<signed-in user's id>", "hostName": "<Event Name>", "eventDate": "2026-12-05" }
+{ "eventName": "Rahul's Wedding", "eventDate": "2026-12-05", "customerId": "<signed-in user's id>" }
 
-→ 201 { "error": false, "status": 201, "message": "Event created successfully", "data": { "_id", "hostName", "shortCode", ... } }
+→ 201 { "error": false, "data": { "folderId", "eventName", "eventDate", "shortCode", "status", "webLink" } }
 ```
 
-The `userId` always comes from the session, never from the browser.
+4. On success the user is taken to **`/weblink-gallery?galleryId=<folderId>`**, the page the backend's `webLink` points to. It loads the capsule from `GET {BACKEND_URL}/api/internal/event-capsule/<galleryId>` and shows the event name, date, actions and the photo area.
+
+`/weblink-gallery` is for the signed-in owner for now: signed-out visitors go to the home page, and other users' capsules show 404. Photo uploads, albums, sharing and QR show "coming soon".
 
 ## Learn More
 

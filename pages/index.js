@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import Seo from "../components/Seo";
 import CreateCapsuleModal from "../components/capsule/CreateCapsuleModal";
@@ -32,6 +33,7 @@ export async function getServerSideProps({ res }) {
 // frame 10750:5359. Section order matches the design top to bottom.
 export default function Home({ jsonLd, robots }) {
   // Create Capsule popup: { open, step: "login" | "details" }
+  const router = useRouter();
   const [capsuleModal, setCapsuleModal] = useState({ open: false, step: "login" });
   const [notice, setNotice] = useState("");
 
@@ -51,10 +53,14 @@ export default function Home({ jsonLd, robots }) {
 
   const closeCapsuleModal = useCallback(() => setCapsuleModal((m) => ({ ...m, open: false })), []);
   const changeCapsuleStep = useCallback((step) => setCapsuleModal({ open: true, step }), []);
-  const handleCapsuleCreated = useCallback((capsule) => {
-    setCapsuleModal({ open: false, step: "details" });
-    setNotice(capsule && capsule.name ? `Your capsule "${capsule.name}" is ready!` : "Your capsule is ready!");
-  }, []);
+  // After creating, open the capsule's weblink gallery page on this site.
+  const handleCapsuleCreated = useCallback(
+    (capsule) => {
+      setCapsuleModal({ open: false, step: "details" });
+      router.push(galleryPath(capsule.id));
+    },
+    [router],
+  );
 
   useEffect(() => {
     if (!notice) return undefined;
@@ -100,3 +106,8 @@ export default function Home({ jsonLd, robots }) {
   );
 }
 
+// Same page as the backend's webLink (/weblink-gallery?galleryId=…), kept on
+// this site so it also works on localhost and preview deployments.
+function galleryPath(galleryId) {
+  return `/weblink-gallery?galleryId=${encodeURIComponent(galleryId)}`;
+}
