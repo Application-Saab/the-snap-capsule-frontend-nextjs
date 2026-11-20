@@ -37,21 +37,19 @@ Restart `npm run dev` after changing it. The backend (`the-snap-capsule-backend-
 
 ## Create Event Capsule
 
-After signing in, the same popup shows **"Let's Create Your Capsule"** with two fields: **Event Name** (2–80 characters) and **Event Date** (`YYYY-MM-DD`, from 1900 up to 5 years ahead). Already signed in users go straight to this step.
+After signing in, the same popup shows **"Let's Create Your Capsule"** with two fields: **Event Name** (2–80 characters) and **Event Date** (`YYYY-MM-DD`, from 1900 up to 5 years ahead). Users who are already signed in go straight to this step.
 
-The form posts to this app's `POST /api/capsules`, which forwards to the backend with the user's session:
+The form posts to this app's `POST /api/capsules`. That route reads the signed-in user from the session cookie and calls the backend's create-event API (same as Hora):
 
 ```
-POST {BACKEND_URL}/api/capsules
+POST {BACKEND_URL}/api/customer/event/create-event-invite
 Authorization: Bearer <session token>
-{ "name": "Rahul's Wedding", "eventDate": "2026-12-05" }
+{ "userId": "<signed-in user's id>", "hostName": "<Event Name>", "eventDate": "2026-12-05" }
 
-201 { "capsule": { "id": "...", "name": "Rahul's Wedding", "eventDate": "2026-12-05" } }
-400 { "message": "...", "field": "name" | "eventDate" }   ← shown under the form
-401                                                          ← popup returns to login
+→ 201 { "error": false, "status": 201, "message": "Event created successfully", "data": { "_id", "hostName", "shortCode", ... } }
 ```
 
-Until the backend has this endpoint, the popup shows "Creating capsules isn't available yet."
+The `userId` always comes from the session, never from the browser.
 
 ## Learn More
 
