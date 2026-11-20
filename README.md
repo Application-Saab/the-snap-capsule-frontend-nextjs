@@ -35,6 +35,24 @@ BACKEND_URL=http://localhost:5000
 
 Restart `npm run dev` after changing it. The backend (`the-snap-capsule-backend-nodejs-expressjs`) must be running; locally it prints the email code in its terminal when SMTP isn't set up. For Google, the site's address (e.g. `http://localhost:3000`) must be in the OAuth client's Authorised JavaScript origins.
 
+## Create Event Capsule
+
+After signing in, the same popup shows **"Let's Create Your Capsule"** with two fields: **Event Name** (2–80 characters) and **Event Date** (`YYYY-MM-DD`, from 1900 up to 5 years ahead). Already signed in users go straight to this step.
+
+The form posts to this app's `POST /api/capsules`, which forwards to the backend with the user's session:
+
+```
+POST {BACKEND_URL}/api/capsules
+Authorization: Bearer <session token>
+{ "name": "Rahul's Wedding", "eventDate": "2026-12-05" }
+
+201 { "capsule": { "id": "...", "name": "Rahul's Wedding", "eventDate": "2026-12-05" } }
+400 { "message": "...", "field": "name" | "eventDate" }   ← shown under the form
+401                                                          ← popup returns to login
+```
+
+Until the backend has this endpoint, the popup shows "Creating capsules isn't available yet."
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

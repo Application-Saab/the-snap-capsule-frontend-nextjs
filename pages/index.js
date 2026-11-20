@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import Seo from "../components/Seo";
-import LoginModal from "../components/auth/LoginModal";
+import CreateCapsuleModal from "../components/capsule/CreateCapsuleModal";
 
 import Header from "../components/landing/Header";
 import Hero from "../components/landing/Hero";
@@ -31,28 +31,29 @@ export async function getServerSideProps({ res }) {
 // Landing page built from the Figma landing page design,
 // frame 10750:5359. Section order matches the design top to bottom.
 export default function Home({ jsonLd, robots }) {
-  const [loginOpen, setLoginOpen] = useState(false);
+  // Create Capsule popup: { open, step: "login" | "details" }
+  const [capsuleModal, setCapsuleModal] = useState({ open: false, step: "login" });
   const [notice, setNotice] = useState("");
 
-  // "Create Capsule" / "Create Now": sign in first. The page is cached for
-  // everyone, so the session is checked here in the browser, not on the server.
+  // "Create Capsule" / "Create Now": sign in first, then the event details.
+  // The page is cached for everyone, so the session is checked here in the
+  // browser, not on the server.
   const openCreateCapsule = useCallback(async (event) => {
     if (event) event.preventDefault();
-    let user = null;
+    let signedIn = false;
     try {
-      const res = await fetch("/api/auth/me");
-      if (res.ok) user = (await res.json()).user;
+      signedIn = (await fetch("/api/auth/me")).ok;
     } catch {
-      // Network problem: show the login popup.
+      // Network problem: start with the login step.
     }
-    if (user) setNotice(signedInText(user));
-    else setLoginOpen(true);
+    setCapsuleModal({ open: true, step: signedIn ? "details" : "login" });
   }, []);
 
-  const closeLogin = useCallback(() => setLoginOpen(false), []);
-  const handleSignedIn = useCallback((user) => {
-    setLoginOpen(false);
-    setNotice(signedInText(user));
+  const closeCapsuleModal = useCallback(() => setCapsuleModal((m) => ({ ...m, open: false })), []);
+  const changeCapsuleStep = useCallback((step) => setCapsuleModal({ open: true, step }), []);
+  const handleCapsuleCreated = useCallback((capsule) => {
+    setCapsuleModal({ open: false, step: "details" });
+    setNotice(capsule && capsule.name ? `Your capsule "${capsule.name}" is ready!` : "Your capsule is ready!");
   }, []);
 
   useEffect(() => {
@@ -79,7 +80,13 @@ export default function Home({ jsonLd, robots }) {
         <Testimonials />
         {/* <Faq /> */}
       </main>
-      <LoginModal open={loginOpen} onClose={closeLogin} onSignedIn={handleSignedIn} />
+      <CreateCapsuleModal
+        open={capsuleModal.open}
+        step={capsuleModal.step}
+        onClose={closeCapsuleModal}
+        onStepChange={changeCapsuleStep}
+        onCreated={handleCapsuleCreated}
+      />
       <p
         role="status"
         aria-live="polite"
@@ -93,7 +100,3 @@ export default function Home({ jsonLd, robots }) {
   );
 }
 
-function signedInText(user) {
-  const who = (user && (user.name || user.email)) || "";
-  return who ? `You're signed in as ${who}` : "You're signed in";
-}
