@@ -9,7 +9,14 @@ import "@fontsource/inter/700.css";
 import "@fontsource/inter/800.css";
 import "@fontsource/roboto/600-italic.css";
 import "../app/globals.css";
+import { useEffect } from "react";
+import { initTranslation } from "../lib/translate";
 
 export default function App({ Component, pageProps }) {
+  // Re-applies the language chosen in the dropdown (if not English).
+  useEffect(() => {
+    initTranslation();
+  }, []);
+
   return <Component {...pageProps} />;
 }

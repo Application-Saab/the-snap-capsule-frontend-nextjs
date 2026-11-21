@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Seo from "../components/Seo";
 import CapsuleHome from "../components/capsule/CapsuleHome";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 import { backendUrl, clearedSessionCookie, getSessionToken } from "../lib/auth";
 
 // /weblink-gallery?galleryId=<folder _id>: the Event Capsule page the
@@ -51,10 +52,16 @@ export default function WeblinkGalleryPage({ capsule }) {
       <Seo title={`${capsule.name} — Snap Capsule`} path="/weblink-gallery" robots="noindex, nofollow" />
       <div className="min-h-screen bg-white">
         <header className="sticky top-0 z-30 bg-white shadow-header">
-          <div className="mx-auto flex h-[66px] w-full max-w-[780px] items-center px-4">
-            <Link href="/" aria-label="Snap Capsule home" className="font-poppins text-[20px] font-bold leading-none text-brand">
+          <div className="mx-auto flex h-[66px] w-full max-w-[780px] items-center justify-between px-4">
+            <Link
+              href="/"
+              aria-label="Snap Capsule home"
+              className="notranslate font-poppins text-[20px] font-bold leading-none text-brand"
+              translate="no"
+            >
               Snap Capsule
             </Link>
+            <LanguageSwitcher />
           </div>
         </header>
         <main>

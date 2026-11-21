@@ -147,7 +147,11 @@ export default function LoginCard({ headingId = "login-heading", onSignedIn }) {
       {step === "email" ? (
         <>
           <div className="relative text-center">
-            <p className="font-inter text-[16px] font-medium text-[#6d6a9c]">Welcome to Snap Capsule</p>
+            <p className="font-inter text-[16px] font-medium text-[#6d6a9c]">Welcome to{" "}
+              <span className="notranslate" translate="no">
+                Snap Capsule
+              </span>
+            </p>
             <h1 id={headingId} className="mt-1 font-poppins text-[34px] font-bold leading-tight text-brand-ink">
               Get{" "}
               <span className="relative inline-block text-brand">
@@ -212,7 +216,11 @@ export default function LoginCard({ headingId = "login-heading", onSignedIn }) {
       ) : (
         <>
           <div className="relative text-center">
-            <p className="font-inter text-[16px] font-medium text-[#6d6a9c]">Welcome to Snap Capsule</p>
+            <p className="font-inter text-[16px] font-medium text-[#6d6a9c]">Welcome to{" "}
+              <span className="notranslate" translate="no">
+                Snap Capsule
+              </span>
+            </p>
             <h1 id={headingId} className="mt-1 font-poppins text-[32px] font-bold leading-tight text-brand-ink">
               <span className="relative inline-block">
                 Verification

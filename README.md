@@ -53,6 +53,17 @@ Authorization: Bearer <session token>
 
 `/weblink-gallery` is for the signed-in owner for now: signed-out visitors go to the home page, and other users' capsules show 404. Photo uploads, albums, sharing and QR show "coming soon".
 
+## Languages
+
+A language dropdown in the header (landing page and capsule page) offers **English (default), Español, Français, Deutsch, العربية and 中文**. Choosing one translates the whole page, including popups opened later, with Google's website translator. Nothing is hard-coded per language, so new content is translated automatically.
+
+- The choice is saved in the `googtrans` cookie and kept across pages and visits. Choosing English clears it and reloads the original text.
+- Google's script loads only after someone picks a language other than English.
+- Arabic switches the page to right-to-left (`<html dir="rtl">`).
+- To keep a word untranslated (e.g. the brand), add `className="notranslate"` (or `translate="no"`).
+- To add or remove a language, edit `LANGUAGES` in `lib/translate.js` (Google Translate language codes).
+- Text typed into form fields and placeholders aren't translated; machine translations can be imperfect.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
