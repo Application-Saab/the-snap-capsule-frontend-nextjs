@@ -35,6 +35,24 @@ BACKEND_URL=http://localhost:5000
 
 Restart `npm run dev` after changing it. The backend (`the-snap-capsule-backend-nodejs-expressjs`) must be running; locally it prints the email code in its terminal when SMTP isn't set up. For Google, the site's address (e.g. `http://localhost:3000`) must be in the OAuth client's Authorised JavaScript origins.
 
+## Create Event Capsule
+
+1. The user clicks **Create Capsule** (or **Create Now**) and signs in in the popup, if they aren't already.
+2. The popup shows **"Let's Create Your Capsule"**: **Event Name** (2–80 characters) and **Event Date** (`YYYY-MM-DD`).
+3. **Create Event Capsule** posts to this app's `POST /api/capsules`. That route adds the signed-in user's id and calls the backend:
+
+```
+POST {BACKEND_URL}/api/internal/create-event-capsule
+Authorization: Bearer <session token>
+{ "eventName": "Rahul's Wedding", "eventDate": "2026-12-05", "customerId": "<signed-in user's id>" }
+
+→ 201 { "error": false, "data": { "folderId", "eventName", "eventDate", "shortCode", "status", "webLink" } }
+```
+
+4. On success the user is taken to **`/weblink-gallery?galleryId=<folderId>`**, the page the backend's `webLink` points to. It loads the capsule from `GET {BACKEND_URL}/api/internal/event-capsule/<galleryId>` and shows the event name, date, actions and the photo area.
+
+`/weblink-gallery` is for the signed-in owner for now: signed-out visitors go to the home page, and other users' capsules show 404. Photo uploads, albums, sharing and QR show "coming soon".
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

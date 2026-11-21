@@ -1,6 +1,7 @@
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import Seo from "../components/Seo";
-import LoginModal from "../components/auth/LoginModal";
+import CreateCapsuleModal from "../components/capsule/CreateCapsuleModal";
 
 import Header from "../components/landing/Header";
 import Hero from "../components/landing/Hero";
@@ -31,29 +32,44 @@ export async function getServerSideProps({ res }) {
 // Landing page built from the Figma landing page design,
 // frame 10750:5359. Section order matches the design top to bottom.
 export default function Home({ jsonLd, robots }) {
-  const [loginOpen, setLoginOpen] = useState(false);
+  // Create Capsule popup: { open, step: "login" | "details" }
+  const router = useRouter();
+  // Create Capsule popup: { open, step: "login" | "details", customerId }
+  const [capsuleModal, setCapsuleModal] = useState({ open: false, step: "login", customerId: null });
   const [notice, setNotice] = useState("");
 
-  // "Create Capsule" / "Create Now": sign in first. The page is cached for
-  // everyone, so the session is checked here in the browser, not on the server.
+  // "Create Capsule" / "Create Now": sign in first, then the event details.
+  // The page is cached for everyone, so the session is checked here in the
+  // browser, not on the server.
   const openCreateCapsule = useCallback(async (event) => {
     if (event) event.preventDefault();
     let user = null;
     try {
       const res = await fetch("/api/auth/me");
-      if (res.ok) user = (await res.json()).user;
+      if (res.ok) user = (await res.json()).user || null;
     } catch {
-      // Network problem: show the login popup.
+      // Network problem: start with the login step.
     }
-    if (user) setNotice(signedInText(user));
-    else setLoginOpen(true);
+    setCapsuleModal(
+      user ? { open: true, step: "details", customerId: user.id } : { open: true, step: "login", customerId: null },
+    );
   }, []);
 
-  const closeLogin = useCallback(() => setLoginOpen(false), []);
-  const handleSignedIn = useCallback((user) => {
-    setLoginOpen(false);
-    setNotice(signedInText(user));
-  }, []);
+  const closeCapsuleModal = useCallback(() => setCapsuleModal((m) => ({ ...m, open: false })), []);
+  const changeCapsuleStep = useCallback((step) => setCapsuleModal((m) => ({ ...m, open: true, step })), []);
+  // Logged in inside the popup: remember who, then show the event details.
+  const handleSignedIn = useCallback(
+    (user) => setCapsuleModal({ open: true, step: "details", customerId: user ? user.id : null }),
+    [],
+  );
+  // After creating, open the capsule's weblink gallery page on this site.
+  const handleCapsuleCreated = useCallback(
+    (capsule) => {
+      setCapsuleModal((m) => ({ ...m, open: false }));
+      router.push(galleryPath(capsule.id));
+    },
+    [router],
+  );
 
   useEffect(() => {
     if (!notice) return undefined;
@@ -79,7 +95,15 @@ export default function Home({ jsonLd, robots }) {
         <Testimonials />
         {/* <Faq /> */}
       </main>
-      <LoginModal open={loginOpen} onClose={closeLogin} onSignedIn={handleSignedIn} />
+      <CreateCapsuleModal
+        open={capsuleModal.open}
+        step={capsuleModal.step}
+        customerId={capsuleModal.customerId}
+        onSignedIn={handleSignedIn}
+        onClose={closeCapsuleModal}
+        onStepChange={changeCapsuleStep}
+        onCreated={handleCapsuleCreated}
+      />
       <p
         role="status"
         aria-live="polite"
@@ -93,7 +117,8 @@ export default function Home({ jsonLd, robots }) {
   );
 }
 
-function signedInText(user) {
-  const who = (user && (user.name || user.email)) || "";
-  return who ? `You're signed in as ${who}` : "You're signed in";
+// Same page as the backend's webLink (/weblink-gallery?galleryId=…), kept on
+// this site so it also works on localhost and preview deployments.
+function galleryPath(galleryId) {
+  return `/weblink-gallery?galleryId=${encodeURIComponent(galleryId)}`;
 }
