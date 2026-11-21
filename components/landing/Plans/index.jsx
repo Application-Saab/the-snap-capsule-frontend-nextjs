@@ -1,9 +1,12 @@
+import { useLocale } from "../../../lib/locale";
 import { PLANS } from "../data";
 import { CheckCircle } from "../icons";
 import { PrimaryButton, Section, SectionHeading } from "../shared";
 import "./Plans.css";
 
 export default function Plans() {
+  // Price follows the region picked in the language dropdown (₹ by default).
+  const { formatPrice } = useLocale();
   return (
     <Section id="plans">
       <div className="plans">
@@ -26,7 +29,9 @@ export default function Plans() {
               </ul>
               <p className="plans__price">
                 <span className="plans__price-label">Price</span>{" "}
-                <span className="plans__price-amount">{p.price}</span>
+                <span className="plans__price-amount notranslate" translate="no">
+                  {formatPrice(p.prices)}
+                </span>
               </p>
               <PrimaryButton href="#" icon={null} className="plans__cta">
                 {p.cta}

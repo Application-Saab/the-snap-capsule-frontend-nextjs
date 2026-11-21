@@ -53,25 +53,29 @@ Authorization: Bearer <session token>
 
 `/weblink-gallery` is for the signed-in owner for now: signed-out visitors go to the home page, and other users' capsules show 404. Photo uploads, albums, sharing and QR show "coming soon".
 
-## Languages
+## Languages, prices and dates
 
-A language dropdown in the header (landing page and capsule page), grouped by region:
+A **language / region dropdown with flags** in the header (landing page and capsule page). The choice changes three things:
 
-| Region | Languages |
-|---|---|
-| USA | English (default), Español |
-| Europe | Français, Deutsch, Italiano, Português |
-| Saudi Arabia | العربية (right-to-left) |
-| Asia | 中文 (简体), हिन्दी, 日本語, 한국어, ไทย, Bahasa Indonesia, Bahasa Melayu |
+1. **Text:** the whole page, including popups opened later, is translated with Google's website translator. Nothing is hard-coded per language, so new content is translated automatically.
+2. **Prices:** plans show the region's currency (prices per currency in `PLANS[].prices`, `components/landing/data.js`).
+3. **Dates:** shown in the language's format, e.g. 5 December 2026 / December 5, 2026 / 5. Dezember 2026 / 2026年12月5日.
 
- Choosing one translates the whole page, including popups opened later, with Google's website translator. Nothing is hard-coded per language, so new content is translated automatically.
+| Region | Entry | Currency | Date example |
+|---|---|---|---|
+| Asia | English (India) **(default)**, हिन्दी | INR ₹199/- | 5 December 2026 |
+| Asia | 中文, 日本語, 한국어, ไทย, Bahasa Indonesia, Bahasa Melayu | CNY, JPY, KRW, THB, IDR, MYR | 2026年12月5日 … |
+| USA | English (US), Español (EE. UU.) | USD $2.49 | December 5, 2026 |
+| Europe | Français, Deutsch, Italiano, Português | EUR 1,99 € | 5. Dezember 2026 |
+| Saudi Arabia | العربية (right-to-left) | SAR | Gregorian calendar |
 
-- The choice is saved in the `googtrans` cookie and kept across pages and visits. Choosing English clears it and reloads the original text.
-- Google's script loads only after someone picks a language other than English.
-- Arabic switches the page to right-to-left (`<html dir="rtl">`).
-- To keep a word untranslated (e.g. the brand), add `className="notranslate"` (or `translate="no"`).
-- To add or remove a language, edit `LANGUAGES` in `lib/translate.js` (Google Translate language codes).
-- Text typed into form fields and placeholders aren't translated; machine translations can be imperfect.
+- The choice is saved in the `sc_lang` cookie, plus Google's `googtrans` cookie (`/en/<code>`) for translated languages. It's kept across pages and visits.
+- Google's script loads only for translated languages. English (India) ↔ English (US) switches prices/dates without reloading; going back to English from a translated language reloads the original text.
+- Pages are rendered with the default (₹, English) on the server, and the saved choice is applied right after loading.
+- Prices and dates are marked `notranslate`, so Google doesn't change them. Use `className="notranslate"` (or `translate="no"`) for anything else that must not be translated.
+- **To add a language:** add an entry to `LANGUAGES` in `lib/translate.js` (id, label, region, `country` for the flag, Google `translate` code, `locale`, `currency`). Copy its flag SVG into `public/flags/`, and add the currency to each plan's `prices`.
+- Text typed into form fields and placeholders isn't translated; machine translations can be imperfect.
+- **TODO (pricing):** prices other than INR are placeholders, roughly the INR price rounded. Set the real prices before launch.
 
 ## Learn More
 
