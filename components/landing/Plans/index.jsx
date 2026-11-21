@@ -28,7 +28,7 @@ export default function Plans() {
                 ))}
               </ul>
               <p className="plans__price">
-                <span className="plans__price-label">Price</span>{" "}
+                {/* <span className="plans__price-label">Price</span>{" "} */}
                 <span className="plans__price-amount notranslate" translate="no">
                   {formatPrice(p.prices)}
                 </span>
