@@ -45,8 +45,10 @@ export const PLANS = [
     name: "Single Capsule Plan",
     variant: "(Photos Only)",
     features: ["1 Event Capsule", "Up to 1500 Photos", "Annual Renewal"],
-    price: "₹199/-",
     amount: 199, // INR, used for structured data
+    // TODO(pricing): prices other than INR are placeholders (≈ the INR price,
+    // rounded). Set the real price for each currency before launch.
+    prices: { INR: 199, USD: 2.49, EUR: 1.99, SAR: 8.99, CNY: 15.99, JPY: 349, KRW: 3300, THB: 79, IDR: 35000, MYR: 9.9 },
     period: "year",
     cta: "Choose Annual Plan →",
   },
@@ -54,8 +56,8 @@ export const PLANS = [
     name: "Single Capsule Plan",
     variant: "(Photos & Videos)",
     features: ["Photos & Videos", "Up to 1500 Photos", "Annual Renewal"],
-    price: "₹399/-",
     amount: 399, // INR, used for structured data
+    prices: { INR: 399, USD: 4.99, EUR: 3.99, SAR: 17.99, CNY: 32.99, JPY: 699, KRW: 6500, THB: 159, IDR: 69000, MYR: 19.9 },
     period: "year",
     cta: "Choose Annual Plan →",
   },

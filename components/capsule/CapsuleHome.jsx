@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { formatEventDateLong } from "../../lib/dates";
+import { useLocale } from "../../lib/locale";
 
 const FEATURES = [
   { icon: "face", title: "Face Recognition", text: "Find yourself easily" },
@@ -35,6 +35,8 @@ export default function CapsuleHome({ capsule }) {
   }, [notice]);
 
   const title = `Welcome to ${capsule.name}`;
+  // Date follows the language/region picked in the dropdown.
+  const { formatDate } = useLocale();
 
   return (
     <div className="mx-auto w-full max-w-[780px] pb-10">
@@ -57,7 +59,9 @@ export default function CapsuleHome({ capsule }) {
               <rect x="3.5" y="5" width="17" height="15" rx="2.5" />
               <path d="M3.5 9.5h17M8 3v4M16 3v4" strokeLinecap="round" />
             </svg>
-            <span>{formatEventDateLong(capsule.eventDate)}</span>
+            <span className="notranslate" translate="no">
+              {formatDate(capsule.eventDate)}
+            </span>
           </p>
         </div>
 
