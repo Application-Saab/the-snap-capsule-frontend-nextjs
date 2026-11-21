@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { DEFAULT_LANGUAGE, LANGUAGES, getCurrentLanguage, setLanguage } from "../lib/translate";
+import { DEFAULT_LANGUAGE, LANGUAGE_GROUPS, getCurrentLanguage, setLanguage } from "../lib/translate";
 
-// Language dropdown. Picking a language translates the whole page with
+// Language dropdown, grouped by region (USA, Europe, Saudi Arabia, Asia).
+// Picking a language translates the whole page with
 // Google's website translator (see lib/translate.js); English is the default.
 // The control itself is marked "notranslate" so the language names stay as is.
 export default function LanguageSwitcher({ className = "" }) {
@@ -32,13 +33,17 @@ export default function LanguageSwitcher({ className = "" }) {
           setLanguageState(e.target.value);
           setLanguage(e.target.value);
         }}
-        className="h-9 cursor-pointer appearance-none rounded-full border border-brand/30 bg-white pl-7 pr-7 font-inter text-[13px] font-medium text-brand-ink outline-none transition hover:border-brand focus:border-brand focus:ring-2 focus:ring-brand/20"
+        className="h-9 max-w-[132px] cursor-pointer appearance-none truncate rounded-full border border-brand/30 bg-white pl-7 pr-7 font-inter sm:max-w-[220px] text-[13px] font-medium text-brand-ink outline-none transition hover:border-brand focus:border-brand focus:ring-2 focus:ring-brand/20"
         aria-label="Choose language"
       >
-        {LANGUAGES.map((l) => (
-          <option key={l.code} value={l.code} lang={l.code}>
-            {l.label}
-          </option>
+        {LANGUAGE_GROUPS.map((group) => (
+          <optgroup key={group.region} label={group.region}>
+            {group.languages.map((l) => (
+              <option key={l.code} value={l.code} lang={l.code}>
+                {l.label}
+              </option>
+            ))}
+          </optgroup>
         ))}
       </select>
       <svg

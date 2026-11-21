@@ -55,7 +55,16 @@ Authorization: Bearer <session token>
 
 ## Languages
 
-A language dropdown in the header (landing page and capsule page) offers **English (default), Español, Français, Deutsch, العربية and 中文**. Choosing one translates the whole page, including popups opened later, with Google's website translator. Nothing is hard-coded per language, so new content is translated automatically.
+A language dropdown in the header (landing page and capsule page), grouped by region:
+
+| Region | Languages |
+|---|---|
+| USA | English (default), Español |
+| Europe | Français, Deutsch, Italiano, Português |
+| Saudi Arabia | العربية (right-to-left) |
+| Asia | 中文 (简体), हिन्दी, 日本語, 한국어, ไทย, Bahasa Indonesia, Bahasa Melayu |
+
+ Choosing one translates the whole page, including popups opened later, with Google's website translator. Nothing is hard-coded per language, so new content is translated automatically.
 
 - The choice is saved in the `googtrans` cookie and kept across pages and visits. Choosing English clears it and reloads the original text.
 - Google's script loads only after someone picks a language other than English.
