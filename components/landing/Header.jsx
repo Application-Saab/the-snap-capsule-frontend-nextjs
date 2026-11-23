@@ -1,23 +1,15 @@
-import Link from "next/link";
+import BrandLogo from "../BrandLogo";
 import LanguageSwitcher from "../LanguageSwitcher";
 import { NAV_LINKS } from "./data";
 import { MenuIcon } from "./icons";
 
-// Wordmark + hamburger at every width; the menu opens with a
+// Logo + hamburger at every width; the menu opens with a
 // native <details> element so it works without client-side JavaScript.
 export default function Header() {
   return (
     <header className="sticky top-0 z-30 bg-white shadow-header">
       <div className="mx-auto flex h-[66px] w-full max-w-[780px] items-center justify-between px-4">
-        {/* TODO(brand): swap this text wordmark for the Snap Capsule logo file. */}
-        <Link
-          href="/"
-          aria-label="Snap Capsule home"
-          className="notranslate shrink-0 font-poppins text-[20px] font-bold leading-none text-brand"
-          translate="no"
-        >
-          Snap Capsule
-        </Link>
+        <BrandLogo />
 
         <div className="flex items-center gap-1">
           <LanguageSwitcher />
