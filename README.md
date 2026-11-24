@@ -20,36 +20,49 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Login (email code + Google)
+## How the website talks to the backend (same as Hora)
 
-"Create Capsule" and "Create Now" open a login popup (there is no `/login` page). Users sign in with a 6-digit code sent to their email, or with Google. The popup talks to this app's `/api/auth/*` routes, which forward to the Express backend and keep the session in an httpOnly `sc_session` cookie (browser JavaScript never sees the token).
+```
+Browser  ──  https://thesnapcapsule.com/api/*  ──▶  Express backend (snap-capsule-backend)
+              (web server on the live site; next.config rewrite locally)
+Next.js server-rendered pages ──  BACKEND_URL  ──▶  same backend (on the server: http://localhost:5001)
+```
+
+- Like Hora, the **browser calls the backend directly** at `/api/...` on the website's own domain. This app has **no `/api` routes of its own**.
+- Unlike Hora (token in `localStorage`), the login is an **httpOnly cookie `sc_session` set by the backend**. Page JavaScript can't read it, and the browser sends it with every `/api` request.
+- **Server-rendered pages** (`/` for the signed-in user, `/weblink-gallery` for the capsule) read that cookie and call the backend at `BACKEND_URL`.
+- **`next.config.ts`** rewrites `/api/:path*` to `BACKEND_URL`, so local development works exactly like the live site. On the live server the web server sends `/api/*` to the backend first.
+- **The backend's `CORS_ORIGINS`** must include the website's address (`http://localhost:3000` locally, `https://thesnapcapsule.com` live). The backend refuses logins and other POSTs from any other site.
 
 Create `.env.local` with:
 
 ```
 # Google OAuth Web client ID (public)
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=238383179178-dn4hei0qsd1t5ge037bghbispjr0gsoj.apps.googleusercontent.com
-# Where the Express backend runs (server-only)
+# Where the Express backend runs (server-only): 5000 locally, 5001 on the live server
 BACKEND_URL=http://localhost:5000
 ```
 
-Restart `npm run dev` after changing it. The backend (`the-snap-capsule-backend-nodejs-expressjs`) must be running; locally it prints the email code in its terminal when SMTP isn't set up. For Google, the site's address (e.g. `http://localhost:3000`) must be in the OAuth client's Authorised JavaScript origins.
+Restart `npm run dev` after changing it, since the rewrite is read at startup. On the live server, rebuild (`npm run build`) after changing `BACKEND_URL`. The backend must be running; locally it prints the email code in its terminal when SMTP isn't set up. For Google, the site's address (e.g. `http://localhost:3000`) must be in the OAuth client's Authorised JavaScript origins.
+
+## Login (email code + Google)
+
+"Create Capsule" and "Create Now" open a login popup (there is no `/login` page). Users sign in with a 4-digit code sent to their email, or with Google. The popup calls the backend's `POST /api/auth/email/request-otp`, `POST /api/auth/email/verify-otp` and `POST /api/auth/google`. On success the backend sets the session cookie and returns the user.
 
 ## Create Event Capsule
 
-1. The user clicks **Create Capsule** (or **Create Now**) and signs in in the popup, if they aren't already.
+1. The user clicks **Create Capsule** (or **Create Now**) and signs in in the popup, if they aren't already. The home page knows from the server whether they're signed in.
 2. The popup shows **"Let's Create Your Capsule"**: **Event Name** (2–80 characters) and **Event Date** (`YYYY-MM-DD`).
-3. **Create Event Capsule** posts to this app's `POST /api/capsules`. That route adds the signed-in user's id and calls the backend:
+3. **Create Event Capsule** posts straight to the backend:
 
 ```
-POST {BACKEND_URL}/api/internal/create-event-capsule
-Authorization: Bearer <session token>
+POST /api/internal/create-event-capsule        (signed in by the sc_session cookie)
 { "eventName": "Rahul's Wedding", "eventDate": "2026-12-05", "customerId": "<signed-in user's id>" }
 
 → 201 { "error": false, "data": { "folderId", "eventName", "eventDate", "shortCode", "status", "webLink" } }
 ```
 
-4. On success the user is taken to **`/weblink-gallery?galleryId=<folderId>`**, the page the backend's `webLink` points to. It loads the capsule from `GET {BACKEND_URL}/api/internal/event-capsule/<galleryId>` and shows the event name, date, actions and the photo area.
+4. On success the user is taken to **`/weblink-gallery?galleryId=<folderId>`**, the page the backend's `webLink` points to. It's server-rendered: it loads the capsule from `GET {BACKEND_URL}/api/internal/event-capsule/<galleryId>` and shows the event name, date, actions and the photo area.
 
 `/weblink-gallery` is for the signed-in owner for now: signed-out visitors go to the home page, and other users' capsules show 404. Photo uploads, albums, sharing and QR show "coming soon".
 
