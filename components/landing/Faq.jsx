@@ -7,7 +7,7 @@ export default function Faq() {
     <Section id="faq" inner="px-[6px] pb-16 pt-[13px]">
       <div className="flex items-center gap-[9px]">
         <FaqIcon className="text-brand" />
-        <h2 className="font-inter text-[22px] font-semibold leading-[18px] text-brand">FAQ</h2>
+        <h2 className="font-inter text-[22px] font-semibold leading-[1.3] text-brand">Frequently Asked Questions</h2>
       </div>
       <div className="mt-[20px] flex flex-col gap-[10.5px]">
         {FAQS.map((f) => (
