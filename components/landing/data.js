@@ -99,25 +99,6 @@ export const OCCASIONS = [
   { label: "Baby Shower", image:  img("occ-babyshower","webp") },
 ];
 
-// TODO(content): the design repeats one placeholder review for every card.
-export const TESTIMONIALS = [
- {
-    name: "Neha Gupta",
-    quote: "All our guests uploaded their photos in one place. Every moment of my sister's wedding is now safe in one capsule!",
-    image: img("testimonial-1", "webp"),
-  },
-  {
-    name: "Rajesh Kumar",
-    quote: "The face recognition is amazing. I found every photo of my family from the event within a few seconds.",
-    image: img("testimonial-2", "webp"),
-  },
-  {
-    name: "Amit Verma",
-    quote: "Very easy to set up and share. The QR code worked perfectly and everyone loved reliving the party together.",
-    image: img("testimonial-3", "webp"),
-  },
-];
-
 // TODO(content): these questions come from the Figma file as-is and look
 // carried over from a balloon-decoration site. The design has no
 // answers, so each one shows a placeholder until real copy is added.

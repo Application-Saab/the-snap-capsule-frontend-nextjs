@@ -14,7 +14,6 @@ import TryDemo from "../components/landing/TryDemo";
 import HowItWorks from "../components/landing/HowItWorks";
 import CreateCapsuleCta from "../components/landing/CreateCapsuleCta";
 import Occasions from "../components/landing/Occasions";
-import Testimonials from "../components/landing/Testimonials";
 
 // import Faq from "../components/landing/Faq";
 import { fetchCurrentUser, getSessionToken } from "../lib/auth";
@@ -110,7 +109,6 @@ export default function Home({ jsonLd, robots, user }) {
         <HowItWorks/>
         <CreateCapsuleCta onCreateCapsule={openCreateCapsule} />
         <Occasions />
-        <Testimonials />
         {/* <Faq /> */}
       </main>
       <CreateCapsuleModal
