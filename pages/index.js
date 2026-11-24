@@ -14,8 +14,8 @@ import TryDemo from "../components/landing/TryDemo";
 import HowItWorks from "../components/landing/HowItWorks";
 import CreateCapsuleCta from "../components/landing/CreateCapsuleCta";
 import Occasions from "../components/landing/Occasions";
-
-// import Faq from "../components/landing/Faq";
+import AboutCapsule from "../components/landing/AboutCapsule";
+import Faq from "../components/landing/Faq";
 import { fetchCurrentUser, getSessionToken } from "../lib/auth";
 import { robotsMeta } from "../lib/site";
 import { landingPageLd } from "../lib/structuredData";
@@ -109,7 +109,8 @@ export default function Home({ jsonLd, robots, user }) {
         <HowItWorks/>
         <CreateCapsuleCta onCreateCapsule={openCreateCapsule} />
         <Occasions />
-        {/* <Faq /> */}
+        <AboutCapsule />
+        <Faq />
       </main>
       <CreateCapsuleModal
         open={capsuleModal.open}

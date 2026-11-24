@@ -5,7 +5,7 @@ import { absoluteUrl, isIndexable } from "../lib/site";
 // isIndexable in lib/site.js).
 export async function getServerSideProps({ res }) {
   const body = isIndexable()
-    ? `User-agent: *\nAllow: /\n\nSitemap: ${absoluteUrl("/sitemap.xml")}\n`
+    ? `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${absoluteUrl("/sitemap.xml")}\n`
     : "User-agent: *\nDisallow: /\n";
   res.setHeader("Content-Type", "text/plain; charset=utf-8");
   res.setHeader("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");

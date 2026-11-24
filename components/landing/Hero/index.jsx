@@ -14,7 +14,7 @@ export default function Hero({ onCreateCapsule }) {
           <h1 className="hero__title">
             <span className="hero__title-first">Every Memory.</span>
             <br />
-            Deserve one Private <span className="hero__title-accent">Capsule</span>
+            Deserves One Private <span className="hero__title-accent">Capsule</span>
           </h1>
           <p className="hero__text">
             Create one beautiful space where guests can view and share all your celebration photos.

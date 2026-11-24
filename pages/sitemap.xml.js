@@ -3,7 +3,7 @@ import { absoluteUrl } from "../lib/site";
 // Add new public pages here as the site grows.
 // Set `lastmod` (YYYY-MM-DD) to the date the page content last really changed.
 // Update it only when you edit the page. Do not use today's date automatically.
-const PAGES = [{ path: "/", lastmod: "2026-10-16" }];
+const PAGES = [{ path: "/", lastmod: "2026-11-24" }];
 
 // Escape characters that are not allowed raw inside XML text.
 function escapeXml(value) {

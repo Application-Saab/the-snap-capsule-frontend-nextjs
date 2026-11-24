@@ -99,23 +99,98 @@ export const OCCASIONS = [
   { label: "Baby Shower", image:  img("occ-babyshower","webp") },
 ];
 
-// TODO(content): these questions come from the Figma file as-is and look
-// carried over from a balloon-decoration site. The design has no
-// answers, so each one shows a placeholder until real copy is added.
-// FAQ structured data is only emitted for answers that differ from this
-// placeholder, so search engines never see unfinished copy.
+// "What is Snap Capsule?" section: plain-language copy for people (and
+// search engines) looking for an event photo sharing app. Every statement
+// here matches what the rest of the page already promises; update both
+// together if a feature changes.
+export const ABOUT = {
+  title: "The event photo sharing app for every celebration",
+  intro: [
+    "Snap Capsule collects every photo from your event in one private online album, called an Event Capsule. Create a capsule, share one link or QR code with your guests, and everyone adds the photos they took. No more chasing pictures across WhatsApp groups, Drive links and camera rolls.",
+    "Our AI face recognition sorts the photos for you, so every guest can find the pictures they appear in within seconds. Weddings, birthdays, corporate events, trips and baby showers: every memory stays together, organized and easy to relive.",
+  ],
+  points: [
+    {
+      icon: "qr",
+      title: "Collect photos from every guest",
+      text: "Share your capsule by link on WhatsApp, SMS or social media, or put the QR code on a table card. Guests join in seconds and upload their photos and videos.",
+    },
+    {
+      icon: "face",
+      title: "Find your photos with face recognition",
+      text: "AI detects faces and sorts photos into albums automatically, so nobody has to scroll through thousands of pictures to find themselves.",
+    },
+    {
+      icon: "lock",
+      title: "One private album per event",
+      text: "Each event gets its own private capsule. Only the people you share your link or QR code with can join, and you stay in control as the host.",
+    },
+    {
+      icon: "globe",
+      title: "Made for events around the world",
+      text: "Snap Capsule works in any modern browser, and the site is available in 15 languages, so friends and family can join from anywhere.",
+    },
+  ],
+  keywords: [
+    "Wedding photo sharing",
+    "Birthday party photos",
+    "Corporate event photos",
+    "Baby shower photos",
+    "Trip & vacation albums",
+    "QR code photo sharing",
+  ],
+};
+
+// Answers stick to what the page already states (plans, features, demo).
+// The same text is published as FAQPage structured data for Google.
+// Only answered questions are shown; leave `a` as FAQ_PLACEHOLDER to hide one.
 export const FAQ_PLACEHOLDER = "Answer coming soon — reach out to our team and we’ll help you right away.";
 export const FAQS = [
-  "How much does balloon decoration cost at home?",
-  "Do you offer same-day and midnight balloon decoration?",
-  "It's a surprise. How do you manage that without giving it away?",
-  "What kinds of balloons do you use?",
-  "Will the setup fit my room, and can I change the theme?",
-  "Do you decorate venues and offices, or only homes?",
-  "Is balloon decoration safe around babies and small children?",
-  "Which cities does Snap Capsule cover?",
-  "How long does the setup take, and do you clean up afterward?",
-].map((q) => ({ q, a: FAQ_PLACEHOLDER }));
+  {
+    q: "What is Snap Capsule?",
+    a: "Snap Capsule is an event photo sharing app. You create a private Event Capsule for your celebration, share it with a link or QR code, and you and your guests upload every photo to one place. AI face recognition then helps everyone find the photos they appear in.",
+  },
+  {
+    q: "How do guests add photos to my event?",
+    a: "Share your capsule link on WhatsApp, SMS or social media, or let guests scan your QR code. They open the link, log in quickly, and upload their photos (and videos on the Photos & Videos plan) straight to your event gallery.",
+  },
+  {
+    q: "How does face recognition help me find my photos?",
+    a: "Our AI detects the faces in uploaded photos and sorts them automatically, so you can see every photo featuring you without scrolling through the whole event.",
+  },
+  {
+    q: "Is my event capsule private?",
+    a: "Yes. Every event gets its own private capsule, and only the people you share your link or QR code with can join it. As the host, your photos are kept in your private host locker.",
+  },
+  {
+    q: "How many photos can I add to one capsule?",
+    a: "Each Single Capsule Plan includes one Event Capsule with up to 1,500 photos, and every guest you invite can upload to it.",
+  },
+  {
+    q: "Can guests upload videos too?",
+    a: "Yes, with the Single Capsule Plan (Photos & Videos). The Photos Only plan is for pictures.",
+  },
+  {
+    q: "How much does Snap Capsule cost?",
+    a: "There are two yearly plans: Photos Only, and Photos & Videos. Both include one Event Capsule and renew every year. See the Plans section on this page for the current price in your currency.",
+  },
+  {
+    q: "Can I try it before I pay?",
+    a: "Yes. The free demo gives you full access to all features, and no credit card is required. It only takes a minute to get started.",
+  },
+  {
+    q: "Which events can I use Snap Capsule for?",
+    a: "Any event where people take photos: weddings and engagements, birthday parties, corporate events, trips and vacations, baby showers, reunions and more.",
+  },
+  {
+    q: "Can I download and share the photos?",
+    a: "Yes. You and your guests can like, share and download photos from the capsule and relive the memories together.",
+  },
+  {
+    q: "Can I use Snap Capsule outside India?",
+    a: "Yes. Snap Capsule works in any modern web browser, wherever you and your guests are. Use the language menu at the top of the page to switch between 15 languages and regions.",
+  },
+].filter((f) => f.a && f.a !== FAQ_PLACEHOLDER);
 
 export const IMAGES = {
   appPhone: img("app-phone","webp"),
