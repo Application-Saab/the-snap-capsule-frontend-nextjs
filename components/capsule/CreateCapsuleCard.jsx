@@ -4,10 +4,13 @@ import { isoDateFromToday } from "../../lib/dates";
 
 const MIN_DATE = "1900-01-01";
 const MAX_YEARS_AHEAD = 5;
+// Backend API that creates the Event Capsule (same domain: /api/* → backend).
+const CREATE_CAPSULE_API = "/api/internal/create-event-capsule";
 
 /**
  * "Let's Create Your Capsule": asks for the event name and date, then
- * creates the capsule (POST /api/capsules). Shown in the popup right after
+ * creates the capsule (POST /api/internal/create-event-capsule, on the
+ * backend). Shown in the popup right after
  * sign-in, or straight away if the user is already signed in.
  *
  * @param customerId       the signed-in user's id, sent as customerId
@@ -41,25 +44,36 @@ export default function CreateCapsuleCard({ customerId, onCreated, onSessionExpi
     setBusy(true);
     setError({ field: null, message: "" });
     try {
-      const res = await fetch("/api/capsules", {
+      // Straight to the backend (signed in by the httpOnly session cookie).
+      // It replies like Hora: { error, status, message, data }.
+      const res = await fetch(CREATE_CAPSULE_API, {
         method: "POST",
+        credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: trimmed, eventDate, customerId }),
+        body: JSON.stringify({ eventName: trimmed, eventDate, customerId }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.status === 401 && onSessionExpired) {
         onSessionExpired();
         return;
       }
-      if (!res.ok) {
+      if (!res.ok || data.error || !data.data) {
+        const message = data.message || "Couldn't create the capsule. Please try again.";
         setError({
-          field: data.field || null,
-          message: data.message || "Couldn't create the capsule. Please try again.",
+          field: res.status === 400 ? (/date/i.test(message) ? "eventDate" : "name") : null,
+          message,
         });
         setBusy(false);
         return;
       }
-      onCreated(data.capsule);
+      const capsule = data.data;
+      onCreated({
+        id: capsule.folderId,
+        name: capsule.eventName || trimmed,
+        eventDate: capsule.eventDate || eventDate,
+        shortCode: capsule.shortCode || null,
+        webLink: capsule.webLink || null,
+      });
     } catch {
       setError({
         field: null,

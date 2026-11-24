@@ -40,9 +40,12 @@ export default function LoginCard({ headingId = "login-heading", onSignedIn }) {
     if (step === "code" && codeInput.current) codeInput.current.focus();
   }, [step]);
 
+  // Calls the backend directly (same domain, /api/* → backend). On login the
+  // backend sets the httpOnly session cookie; the token never reaches this page.
   async function post(url, body) {
     const res = await fetch(url, {
       method: "POST",
+      credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
