@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { isoDateFromToday } from "../../lib/dates";
+import { withVisitorId } from "../../lib/visitor";
 
 const MIN_DATE = "1900-01-01";
 const MAX_YEARS_AHEAD = 5;
@@ -50,7 +51,8 @@ export default function CreateCapsuleCard({ customerId, onCreated, onSessionExpi
         method: "POST",
         credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ eventName: trimmed, eventDate, customerId }),
+        // visitorId: the browser that created it, shown in the team's dashboard.
+        body: JSON.stringify(withVisitorId({ eventName: trimmed, eventDate, customerId })),
       });
       const data = await res.json().catch(() => ({}));
       if (res.status === 401 && onSessionExpired) {

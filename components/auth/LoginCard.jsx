@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import GoogleSignInButton from "./GoogleSignInButton";
 import OtpInput from "./OtpInput";
+import { withVisitorId } from "../../lib/visitor";
 
 const RESEND_FALLBACK_SECONDS = 60;
 // The backend says how long its codes are (codeLength); 4 until it does.
@@ -42,12 +43,13 @@ export default function LoginCard({ headingId = "login-heading", onSignedIn }) {
 
   // Calls the backend directly (same domain, /api/* → backend). On login the
   // backend sets the httpOnly session cookie; the token never reaches this page.
+  // The visitor ID goes along so the backend links this browser to the account.
   async function post(url, body) {
     const res = await fetch(url, {
       method: "POST",
       credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
+      body: JSON.stringify(withVisitorId(body)),
     });
     const data = await res.json().catch(() => ({}));
     return { ok: res.ok, status: res.status, data };
