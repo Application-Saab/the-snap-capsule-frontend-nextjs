@@ -9,9 +9,15 @@ import "@fontsource/inter/700.css";
 import "@fontsource/inter/800.css";
 import "@fontsource/roboto/600-italic.css";
 import "../app/globals.css";
+import { useEffect } from "react";
 import { LocaleProvider } from "../lib/locale";
+import { registerVisitor } from "../lib/visitor";
 
 export default function App({ Component, pageProps }) {
+  // Save this browser's visitor ID once when the site opens (lib/visitor.js).
+  useEffect(() => {
+    registerVisitor();
+  }, []);
   // LocaleProvider re-applies the language/region chosen in the dropdown
   // (translation, prices, dates) on every page.
   return (
